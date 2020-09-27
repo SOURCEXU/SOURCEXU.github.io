@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） | SourceX99</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="SourceX99" type="application/atom+xml">
 </head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">SourceX99</a></h1></div><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式）</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">2020-09-25</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><blockquote>
 <p>JDK的卸载与安装</p>
-<p>Hadoop的安装</p>
 <p>Zookeeper的安装</p>
+<p>Hadoop的安装</p>
 <p>Hbase的安装</p>
 </blockquote>
 <h3 id="伪分布式平台架构"><a href="#伪分布式平台架构" class="headerlink" title="伪分布式平台架构"></a>伪分布式平台架构</h3><p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/IMG_20200925_163341.jpg"></p>
@@ -37,10 +37,9 @@ yum remove java-XXXX  用yum命令删包，有些包会报“依赖项错误”�
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20160053.png"></p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20160232.png"></p>
 <ul>
-<li><p>安装jdk</p>
-<p>卸载完jdk和java后，我们在root用户下新建java目录,并进入java目录</p>
-</li>
+<li>安装jdk</li>
 </ul>
+<p>卸载完jdk和java后，我们在root用户下新建java目录,并进入java目录</p>
 <pre><code class="bash">mkdir /java
 cd /java</code></pre>
 <p>我们可以查看传到/software目录下压缩包</p>
@@ -64,7 +63,134 @@ export JAVA_HOME CLASSPATH PATH</code></pre>
 <pre><code>source .bash_profile</code></pre>
 <p>输入java -version,如果出现图片中的信息，说明配置成功。否则删除root下的java文件，重新进行配置</p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20162112.png"></p>
-<h2 id="更新中………………………"><a href="#更新中………………………" class="headerlink" title="更新中………………………"></a>更新中………………………</h2></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6"><span class="toc-number"></span> <span class="toc-text">更新中………………………</span></a></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<h3 id="二-Zookeeper的安装"><a href="#二-Zookeeper的安装" class="headerlink" title="二.Zookeeper的安装"></a>二.Zookeeper的安装</h3><ul>
+<li>zookeeper软件包解压</li>
+</ul>
+<p>从hadoop用户退出，进入root用户</p>
+<pre><code class="bash">su - root</code></pre>
+<p>在根目录下创建zookeeper目录</p>
+<pre><code class="bash">mkdir /zookeeper</code></pre>
+<p>将zookeeper的权限变更给hadoop</p>
+<pre><code class="bash">chown hadoop /zookeeper</code></pre>
+<p>进入hadoop用户并切换到zookeeper目录</p>
+<pre><code class="bash">su - hadoop
+cd /zookeeper</code></pre>
+<p>在当前目录下解压缩zookeeper包</p>
+<pre><code>tar -zxf /software/zookeeper-3.4.13.tar.gz</code></pre>
+<ul>
+<li>zookeeper坏境变量设定</li>
+</ul>
+<p>配置zookeeper的环境变量，将下面的变量添加进去</p>
+<p>“~”表示用户主目录</p>
+<pre><code> vi ~/.bash_profile     进入.bash_profile</code></pre>
+<pre><code class="bash">#zookeeper environment
+ZOOKEEPER_HOME=/zookeeper/zookeeper-3.4.13
+PATH=$ZOOKEEPER_HOME/bin:$PATH
+export ZOOKEEPER_HOME PATH</code></pre>
+<p>source 文件</p>
+<pre><code class="bash">source ~/.bash_profile</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164219.png"></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20161754.png"></p>
+<p>验证坏境变量是否配置成功</p>
+<pre><code class="bash">echo $PATH</code></pre>
+<ul>
+<li>zookeeper伪分布模式参数配置</li>
+</ul>
+<p>创建3个data和logs目录</p>
+<pre><code class="bash"> mkdir -p zookeeper1/data
+ mkdir -p zookeeper2/data
+ mkdir -p zookeeper3/data
+ mkdir -p zookeeper1/logs
+ mkdir -p zookeeper2/logs 
+ mkdir -p zookeeper3/logs</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164412.png"></p>
+<p>在3个data目录里创建myid文件</p>
+<pre><code class="bash">echo &#39;1&#39; &gt; zookeeper1/data/myid
+echo &#39;2&#39; &gt; zookeeper2/data/myid
+echo &#39;3&#39; &gt; zookeeper3/data/myid</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164436.png"></p>
+<p>查看myid里的id是否一一对应</p>
+<pre><code class="bash">cat zookeeper1/data/myid
+cat zookeeper2/data/myid
+cat zookeeper3/data/myid</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164536.png"></p>
+<p>进入zookeeper-3.4.13conf目录</p>
+<pre><code class="bash">cd /zookeeper/zookeeper-3.4.13/conf</code></pre>
+<p>用zoo_sample.cfg去生成zoo1.cfg的congfig文件，然后对zoo1.cfg文件进行修改与添加</p>
+<pre><code class="bash">cp zoo_sample.cfg zoo1.cfg   复制
+vi zoo1.cfg    进入文件</code></pre>
+<p>将文件中的dataDir和clientPort两个参数注释掉，因为它们会影响后面的配置，同时将变量添加进去</p>
+<pre><code class="bash">dataDir=/zookeeper/zookeeper1/data
+dataLogDir=/zookeeper/zookeeper1/logs
+clientPort=2181
+server.1=localhost:2888:3888
+server.2=localhost:2889:3889
+server.3=localhost:2890:3890</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173242.png"></p>
+<p>复制zoo1.cfg生成zoo2.cfg zoo3.cfg</p>
+<pre><code class="bash">cp zoo1.cfg zoo2.cfg
+cp zoo1.cfg zoo3.cfg
+vi zoo2.cfg
+vi zoo3.cfg</code></pre>
+<p><strong>注意，要修改zoo2.cfg和zoo3.cfg的dataDir、dataLogDir和clientPort中的序号</strong></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183431.png"></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183453.png"></p>
+<p>启动服务</p>
+<pre><code class="bash">zkServer.sh start zoo1.cfg
+zkServer.sh start zoo2.cfg
+zkServer.sh start zoo3.cfg</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173515.png"></p>
+<p>查看工作进程</p>
+<pre><code class="bash">jps</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173654.png"></p>
+<p>查看工作状态</p>
+<pre><code class="bash">zkServer.sh status zoo1.cfg
+zkServer.sh status zoo2.cfg
+zkServer.sh status zoo3.cfg</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173718.png"></p>
+<p>出现上述的查询结果说明zookeeper已经配置完成</p>
+<h3 id="三-Hadoop的安装"><a href="#三-Hadoop的安装" class="headerlink" title="三.Hadoop的安装"></a>三.Hadoop的安装</h3><ul>
+<li>hadoop 软件包解压</li>
+</ul>
+<p>切换到root的主目录</p>
+<pre><code class="bash">su - root</code></pre>
+<p>在根目录下创建hadoop目录，并将hadoop目录的权限给hadoop，然后切换到hadoop用户，进入hadoop目录，同时在当前目录下解压hadoop包</p>
+<pre><code class="bash">mkdir /hadoop
+cd /
+chown hadoop /hadoop
+su - hadoop
+cd /hadoop
+tar -zxf /software/hadoop-2.7.7.tar.gz </code></pre>
+<ul>
+<li>hadoop坏境变量设定</li>
+</ul>
+<p>添加hadoop环境变量</p>
+<pre><code class="bash"> vi ~/.bash_profile</code></pre>
+<pre><code class="bash">#hadoop environment
+HADOOP_HOME=/hadoop/hadoop-2.7.7
+PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+export HADOOP_HOME PATH</code></pre>
+<pre><code class="bash">source ~/.bash_profile</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174047.png"></p>
+<p>验证配置是否成功</p>
+<pre><code class="bash">echo $PATH</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174131.png"></p>
+<ul>
+<li>hadoop参数配置</li>
+</ul>
+<p>创建 tmp data name 三个文件目录</p>
+<pre><code class="bash">mkdir tmp data name</code></pre>
+<p>配置本机免密码登录</p>
+<pre><code class="bash">cd
+ssh-keygen -t rsa   输入三个enter</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174238.png"></p>
+<pre><code>cd  .ssh 
+cp id_rsa.pub authorized_keys
+ls
+ssh localhost    输入yes</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20175032.png"></p>
+<p>这是无需密码就可登录localhost</p>
+<h3 id="更新中………………………………………………"><a href="#更新中………………………………………………" class="headerlink" title="更新中………………………………………………"></a>更新中………………………………………………</h3></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-Zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">二.Zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-Hadoop%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">三.Hadoop的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6"><span class="toc-number">5.</span> <span class="toc-text">更新中………………………………………………</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
