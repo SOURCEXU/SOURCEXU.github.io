@@ -14,21 +14,21 @@
 <p>我们可以在CentOS系统里查看传输好的文件</p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20180819.png"></p>
 <h3 id="一-JDK的卸载与安装"><a href="#一-JDK的卸载与安装" class="headerlink" title="一.JDK的卸载与安装"></a>一.JDK的卸载与安装</h3><p>从普通用户进入root 用户，在root用户卸载java（为了方便起见，博主将用户名设为hadoop,请不要与下面的hadoop用户混淆)</p>
-<pre><code class="bash">su - root</code></pre>
+<pre><code class="bash">[hadoop@promote~]$su - root</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20165058.png"></p>
 <ul>
 <li>卸载jdk</li>
 </ul>
-<pre><code class="bash">rpm -qa|grep jdk      查看jdk包
-rpm -qa|grep java     查看java包
-rpm -e java-XXXX      用rpm命令删除包
-yum remove java-XXXX  用yum命令删包，有些包会报“依赖项错误”，这时用yum就可以解决问题</code></pre>
+<pre><code class="bash">[root@promote ~]#rpm -qa|grep jdk      查看jdk包
+[root@promote ~]#rpm -qa|grep java     查看java包
+[root@promote ~]#rpm -e java-XXXX      用rpm命令删除包
+[root@promote ~]#yum remove java-XXXX  用yum命令删包，有些包会报“依赖项错误”，这时用yum就可以解决问题</code></pre>
 <p>首先查看系统中的jdk包,发现有4个压缩包，我们要做的就是将它们删除</p>
-<pre><code class="bash">rpm -qa|grep jdk</code></pre>
+<pre><code class="bash">[root@promote ~]#rpm -qa|grep jdk</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155453.png"></p>
 <p>删除jdk包，rpm  -e + 包名，最好是一个一个删除，不要用  rpm -e *  或   yum remove *   一次性将包删除，一次性删除可能会导致后面坏境的搭建出错</p>
 <p>用   rpm -e + 包名，发现报错，此时用yum remove + 包名（推荐）</p>
-<pre><code class="bash">yum remove java-XXXX</code></pre>
+<pre><code class="bash">[root@promote ~]#yum remove java-XXXX</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155642.png"> </p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155806.png"></p>
 <p>​         删除完后，用   rpm -qa|grep jdk 会发现输出为空，说明jdk压缩包已删除</p>
@@ -40,18 +40,18 @@ yum remove java-XXXX  用yum命令删包，有些包会报“依赖项错误”�
 <li>安装jdk</li>
 </ul>
 <p>卸载完jdk和java后，我们在root用户下新建java目录,并进入java目录</p>
-<pre><code class="bash">mkdir /java
-cd /java</code></pre>
+<pre><code class="bash">[root@promote ~]#mkdir /java
+[root@promote ~]#cd /java</code></pre>
 <p>我们可以查看传到/software目录下压缩包</p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20161935.png"></p>
 <p>接下来就是解压software目录下的  jdk-8u201-linux-x64.tar.gz</p>
-<pre><code class="bash">tar -zxf /software/jdk-8u201-linux-x64.tar.gz</code></pre>
+<pre><code class="bash">[root@promote java]#tar -zxf /software/jdk-8u201-linux-x64.tar.gz</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20162002.png"></p>
 <ul>
 <li>修改java坏境变量</li>
 </ul>
 <p>进入hadoop用户，如果诸位系统中没有hadoop用户，可以新建一个hadoop用户,用 useradd hadoop,这样的好处就是当我们需要进行hadoop相关操作时就可以进入该用户，不需要再找了，同时也避免将其框架弄坏。</p>
-<pre><code class="bash">su - hadoop</code></pre>
+<pre><code class="bash">[root@promote java]#su - hadoop</code></pre>
 <p>打开  .bash_profile 配置文件，添加java环境变量</p>
 <pre><code class="bash">vi .bash_profile</code></pre>
 <pre><code class="tiki">#Java environment
@@ -60,65 +60,66 @@ PATH=$JAVA_HOME/bin:$PATH
 export JAVA_HOME CLASSPATH PATH</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20161157.png"></p>
 <p>source 文件</p>
-<pre><code>source .bash_profile</code></pre>
+<pre><code class="bash">[hadoop@promote ~]$source .bash_profile</code></pre>
 <p>输入java -version,如果出现图片中的信息，说明配置成功。否则删除root下的java文件，重新进行配置</p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20162112.png"></p>
 <h3 id="二-Zookeeper的安装"><a href="#二-Zookeeper的安装" class="headerlink" title="二.Zookeeper的安装"></a>二.Zookeeper的安装</h3><ul>
 <li>zookeeper软件包解压</li>
 </ul>
 <p>从hadoop用户退出，进入root用户</p>
-<pre><code class="bash">su - root</code></pre>
+<pre><code class="bash">[root@promote ~]#su - root</code></pre>
 <p>在根目录下创建zookeeper目录</p>
-<pre><code class="bash">mkdir /zookeeper</code></pre>
+<pre><code class="bash">[root@promote ~]#mkdir /zookeeper
+[root@promote ~]#cd /</code></pre>
 <p>将zookeeper的权限变更给hadoop</p>
-<pre><code class="bash">chown hadoop /zookeeper</code></pre>
+<pre><code class="bash">[root@promote /]#chown hadoop /zookeeper</code></pre>
 <p>进入hadoop用户并切换到zookeeper目录</p>
-<pre><code class="bash">su - hadoop
-cd /zookeeper</code></pre>
+<pre><code class="bash">[root@promote /]#su - hadoop
+[hadoop@promote ~]$cd /zookeeper</code></pre>
 <p>在当前目录下解压缩zookeeper包</p>
-<pre><code>tar -zxf /software/zookeeper-3.4.13.tar.gz</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$tar -zxf /software/zookeeper-3.4.13.tar.gz</code></pre>
 <ul>
 <li>zookeeper坏境变量设定</li>
 </ul>
 <p>配置zookeeper的环境变量，将下面的变量添加进去</p>
 <p>“~”表示用户主目录</p>
-<pre><code> vi ~/.bash_profile     进入.bash_profile</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$vi ~/.bash_profile     进入.bash_profile</code></pre>
 <pre><code class="bash">#zookeeper environment
 ZOOKEEPER_HOME=/zookeeper/zookeeper-3.4.13
 PATH=$ZOOKEEPER_HOME/bin:$PATH
 export ZOOKEEPER_HOME PATH</code></pre>
 <p>source 文件</p>
-<pre><code class="bash">source ~/.bash_profile</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$source ~/.bash_profile</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164219.png"></p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20161754.png"></p>
 <p>验证坏境变量是否配置成功</p>
-<pre><code class="bash">echo $PATH</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$echo $PATH</code></pre>
 <ul>
 <li>zookeeper伪分布模式参数配置</li>
 </ul>
 <p>创建3个data和logs目录</p>
-<pre><code class="bash"> mkdir -p zookeeper1/data
- mkdir -p zookeeper2/data
- mkdir -p zookeeper3/data
- mkdir -p zookeeper1/logs
- mkdir -p zookeeper2/logs 
- mkdir -p zookeeper3/logs</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$mkdir -p zookeeper1/data
+[hadoop@promote zookeeper]$mkdir -p zookeeper2/data
+[hadoop@promote zookeeper]$mkdir -p zookeeper3/data
+[hadoop@promote zookeeper]$mkdir -p zookeeper1/logs
+[hadoop@promote zookeeper]$mkdir -p zookeeper2/logs 
+[hadoop@promote zookeeper]$mkdir -p zookeeper3/logs</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164412.png"></p>
 <p>在3个data目录里创建myid文件</p>
-<pre><code class="bash">echo &#39;1&#39; &gt; zookeeper1/data/myid
-echo &#39;2&#39; &gt; zookeeper2/data/myid
-echo &#39;3&#39; &gt; zookeeper3/data/myid</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$echo &#39;1&#39; &gt; zookeeper1/data/myid
+[hadoop@promote zookeeper]$echo &#39;2&#39; &gt; zookeeper2/data/myid
+[hadoop@promote zookeeper]$echo &#39;3&#39; &gt; zookeeper3/data/myid</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164436.png"></p>
 <p>查看myid里的id是否一一对应</p>
-<pre><code class="bash">cat zookeeper1/data/myid
-cat zookeeper2/data/myid
-cat zookeeper3/data/myid</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$cat zookeeper1/data/myid
+[hadoop@promote zookeeper]$cat zookeeper2/data/myid
+[hadoop@promote zookeeper]$cat zookeeper3/data/myid</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164536.png"></p>
 <p>进入zookeeper-3.4.13conf目录</p>
-<pre><code class="bash">cd /zookeeper/zookeeper-3.4.13/conf</code></pre>
+<pre><code class="bash">[hadoop@promote zookeeper]$cd /zookeeper/zookeeper-3.4.13/conf</code></pre>
 <p>用zoo_sample.cfg去生成zoo1.cfg的congfig文件，然后对zoo1.cfg文件进行修改与添加</p>
-<pre><code class="bash">cp zoo_sample.cfg zoo1.cfg   复制
-vi zoo1.cfg    进入文件</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$cp zoo_sample.cfg zoo1.cfg   复制
+[hadoop@promote conf]$vi zoo1.cfg    进入文件</code></pre>
 <p>将文件中的dataDir和clientPort两个参数注释掉，因为它们会影响后面的配置，同时将变量添加进去</p>
 <pre><code class="bash">dataDir=/zookeeper/zookeeper1/data
 dataLogDir=/zookeeper/zookeeper1/logs
@@ -128,69 +129,152 @@ server.2=localhost:2889:3889
 server.3=localhost:2890:3890</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173242.png"></p>
 <p>复制zoo1.cfg生成zoo2.cfg zoo3.cfg</p>
-<pre><code class="bash">cp zoo1.cfg zoo2.cfg
-cp zoo1.cfg zoo3.cfg
-vi zoo2.cfg
-vi zoo3.cfg</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$cp zoo1.cfg zoo2.cfg
+[hadoop@promote conf]$cp zoo1.cfg zoo3.cfg
+[hadoop@promote conf]$vi zoo2.cfg
+[hadoop@promote conf]$vi zoo3.cfg</code></pre>
 <p><strong>注意，要修改zoo2.cfg和zoo3.cfg的dataDir、dataLogDir和clientPort中的序号</strong></p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183431.png"></p>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183453.png"></p>
 <p>启动服务</p>
-<pre><code class="bash">zkServer.sh start zoo1.cfg
-zkServer.sh start zoo2.cfg
-zkServer.sh start zoo3.cfg</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$zkServer.sh start zoo1.cfg
+[hadoop@promote conf]$zkServer.sh start zoo2.cfg
+[hadoop@promote conf]$zkServer.sh start zoo3.cfg</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173515.png"></p>
 <p>查看工作进程</p>
-<pre><code class="bash">jps</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$jps</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173654.png"></p>
 <p>查看工作状态</p>
-<pre><code class="bash">zkServer.sh status zoo1.cfg
-zkServer.sh status zoo2.cfg
-zkServer.sh status zoo3.cfg</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$zkServer.sh status zoo1.cfg
+[hadoop@promote conf]$zkServer.sh status zoo2.cfg
+[hadoop@promote conf]$zkServer.sh status zoo3.cfg</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173718.png"></p>
 <p>出现上述的查询结果说明zookeeper已经配置完成</p>
 <h3 id="三-Hadoop的安装"><a href="#三-Hadoop的安装" class="headerlink" title="三.Hadoop的安装"></a>三.Hadoop的安装</h3><ul>
 <li>hadoop 软件包解压</li>
 </ul>
 <p>切换到root的主目录</p>
-<pre><code class="bash">su - root</code></pre>
+<pre><code class="bash">[hadoop@promote conf]$su - root</code></pre>
 <p>在根目录下创建hadoop目录，并将hadoop目录的权限给hadoop用户，然后切换到hadoop用户，进入hadoop目录，同时在当前目录下解压hadoop包</p>
-<pre><code class="bash">mkdir /hadoop
-cd /
-chown hadoop /hadoop
-su - hadoop
-cd /hadoop
-tar -zxf /software/hadoop-2.7.7.tar.gz </code></pre>
+<pre><code class="bash">[root@promote ~]#mkdir /hadoop
+[root@promote ~]#cd /
+[root@promote /]#chown hadoop /hadoop
+[root@promote /]#su - hadoop
+[hadoop@promote ~]$cd /hadoop
+[hadoop@promote hadoop]$tar -zxf /software/hadoop-2.7.7.tar.gz </code></pre>
 <ul>
 <li>hadoop坏境变量设定</li>
 </ul>
 <p>添加hadoop环境变量</p>
-<pre><code class="bash"> vi ~/.bash_profile</code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$vi ~/.bash_profile</code></pre>
 <pre><code class="bash">#hadoop environment
 HADOOP_HOME=/hadoop/hadoop-2.7.7
 PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
 export HADOOP_HOME PATH</code></pre>
-<pre><code class="bash">source ~/.bash_profile</code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$source ~/.bash_profile</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174047.png"></p>
 <p>验证配置是否成功</p>
-<pre><code class="bash">echo $PATH</code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$echo $PATH</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174131.png"></p>
 <ul>
 <li>hadoop参数配置</li>
 </ul>
 <p>创建 tmp data name 三个文件目录</p>
-<pre><code class="bash">mkdir tmp data name</code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$mkdir tmp data name</code></pre>
 <p>配置本机免密码登录</p>
-<pre><code class="bash">cd
-ssh-keygen -t rsa   输入三个enter</code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$cd ~
+[hadoop@promote ~]$ssh-keygen -t rsa   输入三个enter</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174238.png"></p>
-<pre><code>cd  .ssh 
-cp id_rsa.pub authorized_keys
-ls
-ssh localhost    输入yes</code></pre>
+<pre><code class="bash">[hadoop@promote ~]$cd  .ssh 
+[hadoop@promote .ssh]$cp id_rsa.pub authorized_keys
+[hadoop@promote .ssh]ls
+[hadoop@promote .ssh]ssh localhost    输入yes</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20175032.png"></p>
 <p>这时无需密码就可登录localhost</p>
-<h3 id="更新中………………………………………………"><a href="#更新中………………………………………………" class="headerlink" title="更新中………………………………………………"></a>更新中………………………………………………</h3></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-Zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">二.Zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-Hadoop%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">三.Hadoop的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6"><span class="toc-number">5.</span> <span class="toc-text">更新中………………………………………………</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/09/27/%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE%E2%80%94%E2%80%94%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BAvlan%E5%AE%9E%E9%AA%8C%EF%BC%88Cisco-Packet-Tracer%EF%BC%89/">&lt; 小规模局域网建设——二层交换机vlan实验（Cisco Packet Tracer）</a><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<ul>
+<li>修改 hadoop-env.sh、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-env.sh、yarn-site.xml文件</li>
+</ul>
+<p>进入/etc下的hadoop</p>
+<pre><code class="bash">[hadoop@promote .ssh]cd ~
+[hadoop@promote ~]$ cd /hadoop/hadoop-2.7.7/etc/hadoop</code></pre>
+<p>修改hadoop-env.sh和yarn-env.sh</p>
+<p>因为这两个文件是环境变量文件，所以修改前建议先复制</p>
+<p>修改文件的JAVA_HOME</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ cp hadoop-env.sh hadoop-env.shark
+[hadoop@promote hadoop]$ vi hadoop-env.sh</code></pre>
+<pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171532.png"></p>
+<pre><code class="bash">[hadoop@promote hadoop]$ cp yarn-env.sh  yarn-env.shark
+[hadoop@promote hadoop]$ vi yarn-env.sh</code></pre>
+<pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201   这里需去掉注释“#”</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171751.png"></p>
+<p>修改.xml文件</p>
+<p>修改此类文件，只需将变量添加到<configuration><configuration>之间</configuration></configuration></p>
+<p>修改core-site.xml</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ vi core-site.xml </code></pre>
+<pre><code class="tiki">&lt;property&gt;
+&lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;value&gt;hdfs://localhost:9000&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/tmp&lt;/value&gt;
+&lt;/property&gt;
+</code></pre>
+<p>修改hdfs-site.xml</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ vi hdfs-site.xml </code></pre>
+<pre><code class="tiki">&lt;property&gt;
+&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/name&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/data&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;
+&lt;value&gt;1&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>用mapred-site.xml.template生成.xml文件并进行修改</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ cp mapred-site.xml.template mapred-site.xml
+[hadoop@promote hadoop]$ vi mapred-site.xml</code></pre>
+<pre><code class="tiki">&lt;property&gt;
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+&lt;value&gt;yarn&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>修改 yarn-site.xml</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ vi yarn-site.xml </code></pre>
+<pre><code class="tiki">&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+&lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20172226.png"></p>
+<ul>
+<li>Hadoop格式化，启动和验证</li>
+</ul>
+<p>格式化</p>
+<pre><code class="bash">[hadoop@promote hadoop]$hadoop namenode -format</code></pre>
+<p>这里要找到status,如果status=0，则说明前面的配置成功，如果status非零，则前面存在错误。博主格式化时出现status=1的情况。遇到错误不要害怕，我们要学会查看信息。博主通过查看上面的错误日志，发现hdfs文件中<value>缺少“/”，于是将其补上就可以了</value></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20173503.png"></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174131.png"></p>
+<p>启动</p>
+<p>启动dfs和yarn</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ start-dfs.sh
+[hadoop@promote hadoop]$ start-yarn.sh</code></pre>
+<p>jps查看工作进程，如果出现以下6个进程则说明配置对了，如果少一个或多个，则前面的配置出错。如果缺少namenode、datanode，应该是hdfs文件错误，如果缺少ResourceManager应该是yarn.site.xml文件错误。修改前需将dfs和yarn停掉,运行时再启动。如果前面的6个配置文件都没有错误，然后启动dfs和yarn,查看jps依然没有变化，可以将 /hadoop目录下的data、name文件删除，重新格式化</p>
+<pre><code class="bash">[hadoop@promote hadoop]$jps</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20183129.png"></p>
+<p>验证</p>
+<pre><code class="bash">[hadoop@promote hadoop]$ hadoop fs -mkdir /test
+[hadoop@promote hadoop]$ hadoop fs -ls /
+[hadoop@promote hadoop]$ cd /hadoop/hadoop-2.7.7/share/hadoop/mapreduce
+[hadoop@promote mapreduce]$ls</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20175754.png"></p>
+<pre><code class="bash">[hadoop@promote mapreduce]$ hadoop jar hadoop-mapreduce-examples-2.7.7.jar pi 2 1000</code></pre>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174721.png"></p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174751.png"></p>
+<p>至此，hadoop安装完成！</p>
+<h3 id="更新中……………………………………………"><a href="#更新中……………………………………………" class="headerlink" title="更新中……………………………………………."></a>更新中…………………………………………….</h3></div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-Zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">二.Zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-Hadoop%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">三.Hadoop的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E4%B8%AD%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6%E2%80%A6"><span class="toc-number">5.</span> <span class="toc-text">更新中…………………………………………….</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/09/27/%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE%E2%80%94%E2%80%94%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BAvlan%E5%AE%9E%E9%AA%8C%EF%BC%88Cisco-Packet-Tracer%EF%BC%89/">&lt; 小规模局域网建设——二层交换机vlan实验（Cisco Packet Tracer）</a><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
