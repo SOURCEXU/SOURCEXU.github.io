@@ -123,7 +123,7 @@ Switch(config-if)#exit
 Switch(config)#ip routing</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-14%20190423.png"></p>
 <h3 id="实验四-三层交换机端口聚合"><a href="#实验四-三层交换机端口聚合" class="headerlink" title="实验四 三层交换机端口聚合"></a>实验四 三层交换机端口聚合</h3><pre><code class="tiki">端口聚合
-概念：端口聚合又称聚合端口，聚合链路，以太通道（EtherChannel）。他是把同一台交换机上多个特性相同的物理端口捆绑在一起，形成一个逻      辑的端口。</code></pre>
+概念：端口聚合又称聚合端口，聚合链路，以太通道（EtherChannel）。他是把同一台交换机上多个特性相同的物理端口捆绑在一起，形成一个逻辑的端口。</code></pre>
 <pre><code class="bash">***********************vlan和路由配置*********************
 二层交换机（左）
 Switch&gt;en
@@ -205,8 +205,8 @@ Switch(config-if)#switchport mode trunk
 Switch(config-if)#switchport trunk allowed vlan 100,200
 Switch(config-if)#exit
 配置好后，可通过以下命令查看端口的是否配置正确
-Switch# show run        
-Switch# show etherchannel port-channel   查看接口是否已经加入
+Switch#show run        
+Switch#show etherchannel port-channel   查看接口是否已经加入
 Switch#show etherchannel summary         查看接口状态
 
 
@@ -225,8 +225,8 @@ Switch(config)#inter port-channel 1
 Switch(config-if)#switchport mode trunk 
 Switch(config-if)#switchport trunk allowed vlan 100,200
 Switch(config-if)#exit
-Switch# show run
-Switch# show etherchannel port-channel 
+Switch#show run
+Switch#show etherchannel port-channel 
 Switch#show etherchannel summary 
 
 三层交换机（三层交换机配置主机host1和host2端口）
@@ -244,8 +244,8 @@ Switch(config-if)#switchport trunk encapsulation dot1q
 Switch(config-if)#switchport mode trunk 
 Switch(config-if)#switchport trunk allowed vlan 100,200
 Switch(config-if)#exit
-Switch# show run
-Switch# show etherchannel port-channel 
+Switch#show run
+Switch#show etherchannel port-channel 
 Switch#show etherchannel summary 
 
 #注意：在查看主机间是否ping通之前，先在二层交换机和三层交换机上查看端口是否配置正确，这样可以预先排除错误
