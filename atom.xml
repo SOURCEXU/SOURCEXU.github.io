@@ -6,7 +6,7 @@
   <link href="https://www.sourcex99.top/atom.xml" rel="self"/>
   
   <link href="https://www.sourcex99.top/"/>
-  <updated>2020-10-14T23:28:21.314Z</updated>
+  <updated>2020-10-15T08:05:27.745Z</updated>
   <id>https://www.sourcex99.top/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>虚拟化技术--笔记(VMware Workstation Pro)</title>
+    <link href="https://www.sourcex99.top/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/"/>
+    <id>https://www.sourcex99.top/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/</id>
+    <published>2020-10-15T07:30:16.000Z</published>
+    <updated>2020-10-15T08:05:27.745Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="一-虚拟机中三台主机不同网段的通信"><a href="#一-虚拟机中三台主机不同网段的通信" class="headerlink" title="一.虚拟机中三台主机不同网段的通信"></a>一.虚拟机中三台主机不同网段的通信</h3><pre><code class="tex">题目：有三台主机：A、B、C，实现A与B通，A与C通，B与C不通实现方法：HostA用两张网卡，HostB和HostC分别用HostA中的网卡</code></pre><pre><code class="tex">步骤:1.添加和设置网卡设置不同网段可通过修改DHCP(先修改子网Ip，再修改DHCP，修改起始网段)这里添加了两张网卡--Vmnet2和Vmnet3,并将网段修改位192.168.100.0，192.169.200.0</code></pre><p><img src="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20155807.png"></p><pre><code class="tex">2.配置网卡给HostA主机配置Vmnet2和Vmnet3(设置里配置)给HostB主机配置Vmnet2给HostC主机配置Vmnet3注意：HostB和HostC主机里不能有NET模式的网卡，否则HostB和HostC就能实现通信</code></pre><p><img src="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20155151.png"></p><p><img src="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20155446.png"></p><p><img src="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20155333.png"></p><pre><code class="tex">3.将三台主机的防火墙关闭4.ping(测试)</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;一-虚拟机中三台主机不同网段的通信&quot;&gt;&lt;a href=&quot;#一-虚拟机中三台主机不同网段的通信&quot; class=&quot;headerlink&quot; title=&quot;一.虚拟机中三台主机不同网段的通信&quot;&gt;&lt;/a&gt;一.虚拟机中三台主机不同网段的通信&lt;/h3&gt;&lt;pre&gt;&lt;code cl</summary>
+      
+    
+    
+    
+    
+    <category term="虚拟化 windows10" scheme="https://www.sourcex99.top/tags/%E8%99%9A%E6%8B%9F%E5%8C%96-windows10/"/>
+    
+  </entry>
   
   <entry>
     <title>数据通信——实验笔记(Cisco Packet Tracer)</title>
