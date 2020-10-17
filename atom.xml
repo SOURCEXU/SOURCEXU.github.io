@@ -6,7 +6,7 @@
   <link href="https://www.sourcex99.top/atom.xml" rel="self"/>
   
   <link href="https://www.sourcex99.top/"/>
-  <updated>2020-10-16T08:57:46.641Z</updated>
+  <updated>2020-10-17T07:22:34.879Z</updated>
   <id>https://www.sourcex99.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hadoop系统基本运维</title>
+    <link href="https://www.sourcex99.top/2020/10/17/Hadoop%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%BB%B4/"/>
+    <id>https://www.sourcex99.top/2020/10/17/Hadoop%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E8%BF%90%E7%BB%B4/</id>
+    <published>2020-10-17T07:22:34.000Z</published>
+    <updated>2020-10-17T07:22:34.879Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>Zookeeper的管理</p><p>Hadoop的管理</p><p>Hbase的管理</p></blockquote><h3 id="一-Zookeeper的管理"><a href="#一-Zookeeper的管理" class="headerlink" title="一.Zookeeper的管理"></a>一.Zookeeper的管理</h3><h5 id="1-Zookeeper基本命令"><a href="#1-Zookeeper基本命令" class="headerlink" title="1.Zookeeper基本命令"></a>1.Zookeeper基本命令</h5><pre><code class="tex">启动ZK服务：zkServer.sh start查看ZK服务：ZKServer.sh status停止ZK服务：zkServer.sh stop重启ZK服务：zkServer.sh restart连接服务器：zkCli.sh -server Hostname&amp;IP:2181</code></pre><h5 id="2-Zookeeper的操作界面"><a href="#2-Zookeeper的操作界面" class="headerlink" title="2.Zookeeper的操作界面"></a>2.Zookeeper的操作界面</h5><pre><code class="tex">help --查看帮助ls --查看某个目录包含的所有文件ls2 --查看某个目录包含的所有文件，与ls不同的是它查看到time、version等信息create --创建znode,并设置初始内容   例：create /test &#39;test&#39; 创建一个新的znode节点，‘test’以及与它关联的字符串get --获取znode的数据delete --删除znodequit --退出客户端</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Zookeeper的管理&lt;/p&gt;
+&lt;p&gt;Hadoop的管理&lt;/p&gt;
+&lt;p&gt;Hbase的管理&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;一-Zookeeper的管理&quot;&gt;&lt;a href=&quot;#一-Zookeeper的管理&quot; class=&quot;hea</summary>
+      
+    
+    
+    
+    
+    <category term="hadoop hbase zookeeper" scheme="https://www.sourcex99.top/tags/hadoop-hbase-zookeeper/"/>
+    
+  </entry>
   
   <entry>
     <title>虚拟化技术</title>
