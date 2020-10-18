@@ -4,12 +4,12 @@
 <p>创建数据表</p>
 </blockquote>
 <h3 id="一-创建数据库"><a href="#一-创建数据库" class="headerlink" title="一.创建数据库"></a>一.创建数据库</h3><h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><pre><code class="mysql">create database 数据库名称
-on primarty --在哪个文件组上创建，默认在文件组上创建（主数据文件）
+on primary --在哪个文件组上创建，默认在文件组上创建（主数据文件）
 (
  --当它不是可以独立执行的sql命令的时候，同时它是某个结构中的某一句，就需添加
  name=&#39;逻辑名称_data&#39;,   --逻辑名称一般会有一个后缀，数据文件--data,日志文件--log
  size=初始大小,   --数值不应该包含在‘ ’以内
- fileGrowth=增长方式,  --也不能添加包含在‘ ’以内
+ filegrowth=增长方式,  --也不能添加包含在‘ ’以内
  maxsize=最大容量，
  filename=&#39;全路径名&#39;  --最后依据不添加逗号,扩展名.mdf
 )
@@ -18,7 +18,7 @@ log on   --日志文件
 --当它不是可以独立执行的sql命令的时候，同时它是某个结构中的某一句，就需添加
  name=&#39;逻辑名称_log&#39;,   --逻辑名称一般会有一个后缀，数据文件--data,日志文件--log
  size=初始大小,   --数值不应该包含在‘ ’以内
- fileGrowth=增长方式,  --也不能添加包含在‘ ’以内
+ filegrowth=增长方式,  --也不能添加包含在‘ ’以内
  maxsize=最大容量，
  filename=&#39;全路径名&#39;  --最后依据不添加逗号,扩展名.ldf
 )</code></pre>
@@ -38,7 +38,7 @@ on primary  --primary  可以省略
 log on
 (
     name=&#39;TestSchool_log&#39;,
-    size=3Mb,
+    size=3mb,
     filegrowth=50%,
     maxsize=100mb,   --日志文件一般不限制最大容量
     filename=&#39;D:\SQL\test\TestSchool_log.ldf&#39;
@@ -58,8 +58,8 @@ RECONFIGURE   --重新设置
 execute sp_configure &#39;xp_cmdshell&#39;,1
 RECONFIGURE   --重新设置
 go 
---xp-cmdshell,让其帮助我们创建一个文件夹 &#39;d:\SQL\test&#39;
-execute xp_cmdshell&#39;mkdir d:\SQL\test&#39;</code></pre>
+--xp-cmdshell,让其帮助我们创建一个文件夹 &#39;D:\SQL\test&#39;
+execute xp_cmdshell&#39;mkdir D:\SQL\test&#39;</code></pre>
 <h5 id="实例–创建多个数据库"><a href="#实例–创建多个数据库" class="headerlink" title="实例–创建多个数据库"></a>实例–创建多个数据库</h5><pre><code class="mysql">------------------------------判断------------------------------
 --先判断数据库是否存在，如果存在则删除
 --将当前数据库切换到master
@@ -103,7 +103,7 @@ filegroup userDe
 log on
 (
     name=&#39;TestSchool_log&#39;,
-    size=3Mb,
+    size=3mb,
     filegrowth=50%,
     maxsize=100mb,   --日志文件一般不限制最大容量
     filename=&#39;D:\SQL\test\TestSchool_log.ldf&#39;
