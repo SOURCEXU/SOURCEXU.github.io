@@ -102,14 +102,21 @@
   </url>
   
   <url>
-    <loc>https://www.sourcex99.top/tags/hexo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA-%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%BC%98%E5%8C%96/</loc>
+    <loc>https://www.sourcex99.top/tags/hadoop-hbase-zookeeper/</loc>
     <lastmod>2020-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://www.sourcex99.top/tags/Zookeeper-Hadoop-Hbase/</loc>
+    <loc>https://www.sourcex99.top/tags/Sql/</loc>
+    <lastmod>2020-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.sourcex99.top/tags/hexo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA-%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2020-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -130,14 +137,7 @@
   </url>
   
   <url>
-    <loc>https://www.sourcex99.top/tags/hadoop-hbase-zookeeper/</loc>
-    <lastmod>2020-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://www.sourcex99.top/tags/Sql/</loc>
+    <loc>https://www.sourcex99.top/tags/Zookeeper-Hadoop-Hbase/</loc>
     <lastmod>2020-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
