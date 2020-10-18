@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>Sql Server 基础入门(二) | SourceX99</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="SourceX99" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">SourceX99</a></h1></div><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Sql Server 基础入门(二)</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/10/18/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%BA%8C/">2020-10-18</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><blockquote>
+<p>数据完整性</p>
+<p>代码实现</p>
+</blockquote>
+<h3 id="一-数据完整性"><a href="#一-数据完整性" class="headerlink" title="一.数据完整性"></a>一.数据完整性</h3><h5 id="1-实体完整性"><a href="#1-实体完整性" class="headerlink" title="1.实体完整性"></a>1.实体完整性</h5><p>1.1实体：表的每一行数据称为一个实体</p>
+<p>1.2实体完整性：每一行记录值唯一的、不重复的</p>
+<p>1.3实体完整性包含标识列、主键和唯一键</p>
+<pre><code class="tiki">标识列：系统自动生成，永远不会重复
+主键：非空
+唯一键：唯一，但可以为null(只能空一次)  编辑器中设置方式：右键--&gt;索引/键--&gt;添加--&gt;修改名称、修改类型、确定字段</code></pre>
+<h5 id="2-域完整性"><a href="#2-域完整性" class="headerlink" title="2.域完整性"></a>2.域完整性</h5><p>2.1域：字段</p>
+<p>2.2域完整性：为了保证字段的值是否合理和准确</p>
+<p>2.3域完整性包含非空、类型、check约束、默认值、关系（主外键）</p>
+<h5 id="3-自定义完整性"><a href="#3-自定义完整性" class="headerlink" title="3.自定义完整性"></a>3.自定义完整性</h5><p>3.1.1自定义完整性：用户用自己定义的约束规则</p>
+<p>3.1.1自定义完整性包含check约束、存储过程、触发器</p>
+<h5 id="4-引用完整性"><a href="#4-引用完整性" class="headerlink" title="4.引用完整性"></a>4.引用完整性</h5><p>3.1引用完整性：一个表的某个字段的值引用自另外一个表的某一个字段，被引用的表称为主表，引用表称为从表或者外键表</p>
+<p>3.1.1 选择外键表去创建主外键关系</p>
+<p>3.1.2建立主外键关系的字段类型和意义必需一致</p>
+<p>3.1.3建立关系的字段主表中必须是主键或者唯一键</p>
+<p>3.1.4添加数据的时候先添加主表数据再添加外键表</p>
+<p>3.1.5删除数据的时候先删除外键表数据再删除主表数据</p>
+<h5 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h5><p>关系建立的表的级联操作：</p>
+<p>1.不执行任何操作：该报错就报错，能删除就删除</p>
+<p>2.级联：删除主表记录，对应的从表记录也将被删除</p>
+<p>3.set null：删除主表，从表对应记录的字段值=null ,前提是这个字段可以设置为null</p>
+<p>4.set default:删除主表，从表对应记录的字段值=设置的默认值，前提是这个字段已经设置默认值了</p>
+<h3 id="二-代码实现"><a href="#二-代码实现" class="headerlink" title="二.代码实现"></a>二.代码实现</h3><h5 id="1-创建约束的种类："><a href="#1-创建约束的种类：" class="headerlink" title="1.创建约束的种类："></a>1.创建约束的种类：</h5><pre><code class="mysql">主键约束（primary key (PK)）
+
+唯一键约束（unique (UQ)）
+
+检查约束（check (CK)）
+
+默认值约束（default (DF)）
+
+外键约束(foregin key (FK))</code></pre>
+<h5 id="2-创建约束的语法"><a href="#2-创建约束的语法" class="headerlink" title="2.创建约束的语法"></a>2.创建约束的语法</h5><pre><code class="mysql">after table 表名
+add constraint 约束名称（以简写作为前缀） 约束的说明（字段）</code></pre>
+<pre><code class="mysql">1.将id设置为主键
+after table Teacher
+add constraint PK_Teacher_id primary key（id）
+
+2.设置name为唯一键 (因为唯一键只能执行一次，所以下次执行要删除上次的信息)
+if exists(select * from sysobjects where name=&#39;UQ_Teacher_Name&#39;)
+after table teacher drop constraint UQ_Teacher_Name
+after table Teacher
+add constraint UQ_Teacher_Name unique(name)
+
+3.设置年龄再0~100之间
+after table Teacher
+add constraint CK_Teacher_Age check(age&gt;0 and age&lt;=100)
+
+4为Birthday添加默认值约束
+after table Teachre                      --for 指说明为哪一个字段添加默认值
+add constraint DF_Teacher_Birthday default(&#39;2020-01-01&#39;) for Birthday
+
+5.为classid添加外键约束
+after table Teacher  --从表的某一个字段引用主表的某一个字段
+with nocheck  --不检查现有输出
+add constraint FK_Teacher_classid foreign key(classid) reference classes(cid)
+on delete set null
+</code></pre>
+<pre><code>删除级联
+if exists(select * from sysobjects where name=&#39;FK_Teacher_Name&#39;)
+after table teacher drop constraint FK_Teacher_Name
+with nocheck  --不检查现有输出
+add constraint FK_Teacher_classid foreign key(classid) reference classes(cid)
+on delete set null  (前提是该属性有空值)</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/10/18/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%BA%8C/">https://www.sourcex99.top/2020/10/18/Sql-Server-基础入门-二/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/sql/">sql</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">一.数据完整性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%AE%9E%E4%BD%93%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.0.1.</span> <span class="toc-text">1.实体完整性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%9F%9F%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.0.2.</span> <span class="toc-text">2.域完整性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.0.3.</span> <span class="toc-text">3.自定义完整性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E5%BC%95%E7%94%A8%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.0.4.</span> <span class="toc-text">4.引用完整性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.0.5.</span> <span class="toc-text">补充</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">二.代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%88%9B%E5%BB%BA%E7%BA%A6%E6%9D%9F%E7%9A%84%E7%A7%8D%E7%B1%BB%EF%BC%9A"><span class="toc-number">2.0.1.</span> <span class="toc-text">1.创建约束的种类：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E7%BA%A6%E6%9D%9F%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="toc-number">2.0.2.</span> <span class="toc-text">2.创建约束的语法</span></a></li></ol></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/10/18/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%80/">Sql Server 基础入门(一) &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'0WsDSFa215v3chGgKoRP2Uan-gzGzoHsz',
+  appKey:'hRSFPXd4dBVvyC5qVJgwTGRw',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">SourceX99</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
