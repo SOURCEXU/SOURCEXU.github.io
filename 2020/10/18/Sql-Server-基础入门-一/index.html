@@ -58,7 +58,7 @@ RECONFIGURE   --重新设置
 execute sp_configure &#39;xp_cmdshell&#39;,1
 RECONFIGURE   --重新设置
 go 
---xp-cmdshell,让其帮补我们创建一个文件夹 &#39;d:\SQL\test&#39;
+--xp-cmdshell,让其帮助我们创建一个文件夹 &#39;d:\SQL\test&#39;
 execute xp_cmdshell&#39;mkdir d:\SQL\test&#39;</code></pre>
 <h5 id="实例–创建多个数据库"><a href="#实例–创建多个数据库" class="headerlink" title="实例–创建多个数据库"></a>实例–创建多个数据库</h5><pre><code class="mysql">------------------------------判断------------------------------
 --先判断数据库是否存在，如果存在则删除
@@ -77,8 +77,8 @@ RECONFIGURE   --重新设置
 execute sp_configure &#39;xp_cmdshell&#39;,1
 RECONFIGURE   --重新设置
 go 
---xp-cmdshell,让其帮补我们创建一个文件夹 &#39;d:\SQL Server 2008\test&#39;
-execute xp_cmdshell&#39;mkdir d:\SQL Server 2008\test&#39;
+--xp-cmdshell,让其帮助我们创建一个文件夹 &#39;d:\SQL\test&#39;
+execute xp_cmdshell&#39;mkdir d:\SQL\test&#39;
 
 ---------------------------创建数据库-----------------------------
 create database TestSchool
@@ -88,7 +88,7 @@ on primary  --primary  可以省略
     size=3mb,
     filegrowth=10%,
     maxsize=100mb,
-    filename=&#39;D:\SQL Server 2008\test\TestSchool_data.mdf&#39;
+    filename=&#39;D:\SQL\test\TestSchool_data.mdf&#39;
 )，   --创建多个要加 逗号
 --不同的数据文件可以放入不同的数据组中,这时全路径可以改成新文件的路径
 filegroup userDe
@@ -106,14 +106,14 @@ log on
     size=3Mb,
     filegrowth=50%,
     maxsize=100mb,   --日志文件一般不限制最大容量
-    filename=&#39;D:\SQL Server 2008\test\TestSchool_log.ldf&#39;
+    filename=&#39;D:\SQL\test\TestSchool_log.ldf&#39;
 )，
 (
     name=&#39;TestSchool_log1&#39;,
     size=3Mb,
     filegrowth=50%,
     maxsize=100mb,   --日志文件一般不限制最大容量
-    filename=&#39;D:\SQL Server 2008\test\TestSchool_log1.ndf&#39;  --次数据文件，这里写成ndf
+    filename=&#39;D:\SQL\test\TestSchool_log1.ndf&#39;  --次数据文件，这里写成ndf
 )</code></pre>
 <h3 id="二-创建数据表"><a href="#二-创建数据表" class="headerlink" title="二.创建数据表"></a>二.创建数据表</h3><h5 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h5><pre><code class="mysql">create table 表名
 (
@@ -136,7 +136,7 @@ create table Teacher
     Gender bit not null, 
     Age int check(age&gt;0 and age &lt;=100) --约束年龄在0~100
     Salary money, --当一个字段可以为空时，可以写也可以不写null
-    Birthday datetime not null default(&#39;2009.9.9&#39;)  --dafault设置默认值，也可以不设置
+    Birthday datetime not null default(&#39;2009-01-01&#39;)  --dafault设置默认值，也可以不设置
 )</code></pre>
 <h5 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h5><pre><code class="mysql">----------------判断数据库是否存在，存在则删除----------------------
 use master
