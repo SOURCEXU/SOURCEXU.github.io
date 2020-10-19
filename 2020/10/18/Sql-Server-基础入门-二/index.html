@@ -40,9 +40,7 @@ add constraint 约束名称（以简写作为前缀） 约束的说明（字段�
 alter table Teacher
 add constraint PK_Teacher_id primary key（id）
 
-2.设置name为唯一键 (因为唯一键只能执行一次，所以下次执行要删除上次的信息)
-if exists(select * from sysobjects where name=&#39;UQ_Teacher_Name&#39;)
-alter table teacher drop constraint UQ_Teacher_Name
+2.设置name为唯一键 
 alter table Teacher
 add constraint UQ_Teacher_Name unique(name)
 
