@@ -34,35 +34,35 @@
 默认值约束（default (DF)）
 
 外键约束(foregin key (FK))</code></pre>
-<h5 id="2-创建约束的语法"><a href="#2-创建约束的语法" class="headerlink" title="2.创建约束的语法"></a>2.创建约束的语法</h5><pre><code class="mysql">after table 表名
+<h5 id="2-创建约束的语法"><a href="#2-创建约束的语法" class="headerlink" title="2.创建约束的语法"></a>2.创建约束的语法</h5><pre><code class="mysql">alter table 表名
 add constraint 约束名称（以简写作为前缀） 约束的说明（字段）</code></pre>
 <pre><code class="mysql">1.将id设置为主键
-after table Teacher
+alter table Teacher
 add constraint PK_Teacher_id primary key（id）
 
 2.设置name为唯一键 (因为唯一键只能执行一次，所以下次执行要删除上次的信息)
 if exists(select * from sysobjects where name=&#39;UQ_Teacher_Name&#39;)
-after table teacher drop constraint UQ_Teacher_Name
-after table Teacher
+alter table teacher drop constraint UQ_Teacher_Name
+alter table Teacher
 add constraint UQ_Teacher_Name unique(name)
 
 3.设置年龄再0~100之间
-after table Teacher
+alter table Teacher
 add constraint CK_Teacher_Age check(age&gt;0 and age&lt;=100)
 
 4为Birthday添加默认值约束
-after table Teachre                      --for 指说明为哪一个字段添加默认值
+alter table Teachre                      --for 指说明为哪一个字段添加默认值
 add constraint DF_Teacher_Birthday default(&#39;2020-01-01&#39;) for Birthday
 
 5.为classid添加外键约束
-after table Teacher  --从表的某一个字段引用主表的某一个字段
+alter table Teacher  --从表的某一个字段引用主表的某一个字段
 with nocheck  --不检查现有输出
 add constraint FK_Teacher_classid foreign key(classid) reference classes(cid)
 on delete set null
 </code></pre>
 <pre><code>删除级联
 if exists(select * from sysobjects where name=&#39;FK_Teacher_Name&#39;)
-after table teacher drop constraint FK_Teacher_Name
+alter table teacher drop constraint FK_Teacher_Name
 with nocheck  --不检查现有输出
 add constraint FK_Teacher_classid foreign key(classid) reference classes(cid)
 on delete set null  (前提是该属性有空值)</code></pre>
