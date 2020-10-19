@@ -54,12 +54,9 @@ add constraint CK_Teacher_Age check(age&gt;0 and age&lt;=100)
 alter table Teachre                      --for 指说明为哪一个字段添加默认值
 add constraint DF_Teacher_Birthday default(&#39;2020-01-01&#39;) for Birthday
 
-5.为classid添加外键约束
+5.为classid添加外键约束(级联)
 alter table Teacher  --从表的某一个字段引用主表的某一个字段
-with nocheck  --不检查现有输出
-add constraint FK_Teacher_classid foreign key(classid) reference classes(cid)
-on delete set null
-</code></pre>
+add constraint FK_Teacher_classid foreign key(classid) references classes(cid)</code></pre>
 <pre><code>删除级联
 if exists(select * from sysobjects where name=&#39;FK_Teacher_Name&#39;)
 alter table teacher drop constraint FK_Teacher_Name
