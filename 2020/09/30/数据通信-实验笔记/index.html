@@ -253,7 +253,7 @@ Switch(config-if)#exit
 Switch(config)#inter f0/1                    
 Switch(config-if)#channel-group 1 mode on
 Switch(config-if)#exit
-Switch(config)#inter f0/2
+Switch(config)#inter f0/3                 选择什么样的物理端口加入聚合端口取决于与路由器左右相连的console线的接口
 Switch(config-if)#channel-group 1 mode on
 Switch(config-if)#exit
 Switch(config)#inter port-channel 1
@@ -262,10 +262,10 @@ Switch(config-if)#switchport mode trunk
 Switch(config-if)#switchport trunk allowed vlan 10,20
 Switch(config)#inter port-channel 2                创建聚合端口2
 Switch(config-if)#exit
-Switch(config)#inter f0/1
+Switch(config)#inter f0/2
 Switch(config-if)#channel-group 2 mode on
 Switch(config-if)#exit
-Switch(config)#inter f0/2
+Switch(config)#inter f0/4
 Switch(config-if)#channel-group 2 mode on
 Switch(config-if)#exit
 Switch(config)#inter port-channel 2
@@ -287,6 +287,7 @@ no shut  #开启端口，需进入对应的端口</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-16%20124157.png"></p>
 <pre><code class="tiki">这里只需有P就表示配置成功</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-16%20124306.png"></p>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-21%20000830.png"></p>
 <h3 id="实验五-单臂路由"><a href="#实验五-单臂路由" class="headerlink" title="实验五 单臂路由"></a>实验五 单臂路由</h3><pre><code class="bash">交换机
 Switch&gt;en
 Switch#conf t

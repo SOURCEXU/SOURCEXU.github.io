@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>Sql Server 基础入门 三 | SourceX99</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="SourceX99" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">SourceX99</a></h1></div><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">Sql Server 基础入门 三</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/10/19/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%89/">2020-10-19</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><blockquote>
+<p>数据的插入</p>
+<p>数据的更新</p>
+<p>数据的删除</p>
+<p>数据的检索</p>
+</blockquote>
+<h3 id="一-数据的插入"><a href="#一-数据的插入" class="headerlink" title="一.数据的插入"></a>一.数据的插入</h3><p><img src="/2020/10/19/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-19%20143925.png"></p>
+<p><img src="/2020/10/19/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-19%20143754.png"></p>
+<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><pre><code class="mysql">insert [into] 表名 (字段列表) values(值列表)</code></pre>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><pre><code class="mysql">--说明：标识列值任何时候都不可以插入值,同时插入的值需要满足表的所有完整性约束
+--1.为表的所有字段添加值--如果不指定字段列表，那么就默认需要为所有字段添加值
+insert into Teacher values(&#39;张三&#39;,1,1，20，2000，‘2000-01-02’)
+--2.值不能违反表的约束
+insert into Teacher values(&#39;66&#39;,1,1，20，2000，‘2000-01-02’)  --会报错
+--3.1指定列插入
+insert into Teacher(Name,Gender,Classid,Birthday) values(&#39;张三&#39;,1,1,‘2000-01-02’)
+--3.2插入值要和表中指定值的数目一样
+insert into Teacher values(&#39;66&#39;,1,1，20，2000，‘2000-01-02’，123)  --会报错
+--4.非空字段一定需要插入值，除非它有默认值
+   如果一个字段可以为null,或者默认值，那么在插入的时候也可以执行
+   可以为空字段赋值null，为默认字段赋值default
+--5.所有的值都可以使用‘ ’包含，如果字段的类型是数据，那么系统会自动的进行类型转换
+--6.如果是日期值，没有使用‘ ’，就会得到系统的默认日期</code></pre>
+<h3 id="二-数据的更新"><a href="#二-数据的更新" class="headerlink" title="二.数据的更新"></a>二.数据的更新</h3><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><pre><code class="mysql">update 表名 set 字段=值，字段=值 where 条件(主键、唯一键、标识列)</code></pre>
+<pre><code class="mysql">--1.修改张三的班级为7
+update Teacher set Classid=7 where Name=&#39;张三&#39;
+--2.修改张三的性别 修改为女，同时将年龄修改为25，将工资加1000
+update Teacher set Gender=0,Age=25,Salary=Salary+1000 where Name=&#39;张三&#39;
+--3.判断多条件 not and of 修改性别是男同时是7班，将工资+500
+update Teacher set Salary+=500 where Gender=1 and Classid=7 </code></pre>
+<h3 id="三-数据的删除"><a href="#三-数据的删除" class="headerlink" title="三.数据的删除"></a>三.数据的删除</h3><p>数据的删除，不能删除某一列，因为删除是对记录而言</p>
+<h3 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h3><pre><code>delete [from] 表 where 条件</code></pre>
+<pre><code class="mysql">--1.删除姓名为‘8’的人
+delete from Teacher where Name=&#39;8&#39;
+--2.多条件删除
+删除表中课程id为6，性别为女，年龄大于20
+delete from Teacher where Classid=6 and Gender=0 and Age&gt;20
+--3.删除所有数据
+delete from Teacher</code></pre>
+<p>–truncate</p>
+<p>一次性删除所有记录，日志文件以最小化的方式写入，效率更高</p>
+<p>标识列从种子值重新计算</p>
+<p>不可以触发触发器</p>
+<pre><code class="mysql">truncate table 表名(不能添加条件，因为他不是一条一条删除的的，而实一次性删除所有记录，不关注删除的条数)
+truncate table Teacher</code></pre>
+<h3 id="四-数据的查询"><a href="#四-数据的查询" class="headerlink" title="四.数据的查询"></a>四.数据的查询</h3><h5 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h5><pre><code class="mysql">select 字段列表/*from 列表名 where 条件</code></pre>
+<pre><code class="mysql">--1.查询所有信息
+select * from Teacher
+--2.查询指定的列
+select id,Name,Salary from Teacher
+--3.指定查询的条件，查询女老师
+select * from Teacher where Gender=0
+--4.为列指定中文别名
+select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/10/19/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%89/">https://www.sourcex99.top/2020/10/19/Sql-Server-基础入门-三/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Sql/">Sql</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8F%92%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">一.数据的插入</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95"><span class="toc-number">1.0.1.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.0.2.</span> <span class="toc-text">注意事项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="toc-number">2.</span> <span class="toc-text">二.数据的更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-1"><span class="toc-number">3.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%A0%E9%99%A4"><span class="toc-number">4.</span> <span class="toc-text">三.数据的删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-2"><span class="toc-number">5.</span> <span class="toc-text">语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="toc-number">6.</span> <span class="toc-text">四.数据的查询</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95-3"><span class="toc-number">6.0.1.</span> <span class="toc-text">语法</span></a></li></ol></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/10/18/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%BA%8C/">Sql Server 基础篇(二) &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'0WsDSFa215v3chGgKoRP2Uan-gzGzoHsz',
+  appKey:'hRSFPXd4dBVvyC5qVJgwTGRw',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">SourceX99</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.sourcex99.top/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2020-10-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sourcex99.top/2020/10/19/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%B8%89/</loc>
+    
+    <lastmod>2020-10-20</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sourcex99.top/2020/10/18/Sql-Server-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E4%BA%8C/</loc>
     
     <lastmod>2020-10-19</lastmod>
@@ -31,13 +45,6 @@
   
   <url>
     <loc>https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/</loc>
-    
-    <lastmod>2020-10-17</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sourcex99.top/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2020-10-17</lastmod>
     
@@ -95,7 +102,7 @@
 
   <url>
     <loc>https://www.sourcex99.top/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -103,56 +110,56 @@
   
   <url>
     <loc>https://www.sourcex99.top/tags/hexo-%E5%9B%BE%E7%89%87%E6%8F%92%E5%85%A5/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/hadoop-hbase-zookeeper/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/Sql/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/hexo-%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA-%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE%E4%B8%8E%E4%BC%98%E5%8C%96/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/%E8%99%9A%E6%8B%9F%E5%8C%96-Windows7x64-%E7%AC%94%E8%AE%B0-VMware-Workstation-Pro/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/Zookeeper-Hadoop-Hbase/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.sourcex99.top/tags/sql/</loc>
-    <lastmod>2020-10-19</lastmod>
+    <lastmod>2020-10-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
