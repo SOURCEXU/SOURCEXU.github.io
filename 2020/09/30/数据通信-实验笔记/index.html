@@ -324,7 +324,55 @@ Router(config-subif)#encapsulation dot1Q 20       封装  因为f0/0.2是vlan 20
 Router(config-subif)#ip address 192.168.2.254 255.255.255.0
 Router(config-subif)#exit</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-16%20161621.png"></p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<h3 id="实验六-路由通信"><a href="#实验六-路由通信" class="headerlink" title="实验六 路由通信"></a>实验六 路由通信</h3><pre><code class="bash">配置Router 0
+
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 192.168.1.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 192.168.2.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#inter g0/2
+Router(config-if)#ip address 12.1.1.1 255.255.255.0            配置路由ip地址
+Router(config-if)#no shutdown 
+Router(config-if)#ip route 192.168.3.0 255.255.255.0 12.1.1.2    问Router 1 ,配置Router1的路由ip地址和与它相连的主机，这是实现通信的关键
+Router(config-if)#exit
+
+配置Routere 1
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 192.168.3.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 12.1.1.2 255.255.255.0
+Router(config-if)#ip route 192.168.1.0 255.255.255.0 12.1.1.1    访问Router 0 ,配置Router0的路由ip地址和与它相连的主机，这是实现通信的关键
+Router(config-if)#ip route 192.168.2.0 255.255.255.0 12.1.1.1
+Router(config)#inter g0/2                              给路由配置不同网段的ip，以实习现多个路由的通信
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 12.1.2.1 255.255.255.0
+Router(config-if)#ip route 192.168.4.0 255.255.255.0 12.1.2.2   访问Router 2 ,配置Router2的路由ip地址和与它相连的主机，这是实现通信的关键
+
+配置Router 2
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#ip address 192.168.4.254 255.255.255.0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 12.1.2.2 255.255.255.0
+Router(config-if)#ip route 192.168.3.0 255.255.255.0 12.1.2.1   访问Router 1 ,配置Router1的路由ip地址和与它相连的主机，这是实现通信的关键
+</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-21%20130336.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-%E8%B7%AF%E7%94%B1%E9%80%9A%E4%BF%A1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 路由通信</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
