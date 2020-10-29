@@ -121,10 +121,10 @@ export ZOOKEEPER_HOME PATH</code></pre>
 <pre><code class="bash">[hadoop@promote conf]$cp zoo_sample.cfg zoo1.cfg   复制
 [hadoop@promote conf]$vi zoo1.cfg    进入文件</code></pre>
 <p>将文件中的dataDir和clientPort两个参数注释掉，因为它们会影响后面的配置，同时将变量添加进去</p>
-<pre><code class="bash">dataDir=/zookeeper/zookeeper1/data
-dataLogDir=/zookeeper/zookeeper1/logs
-clientPort=2181
-server.1=localhost:2888:3888
+<pre><code class="bash">dataDir=/zookeeper/zookeeper1/data      #指定Zookeeper的data路径
+dataLogDir=/zookeeper/zookeeper1/logs   #指定Zookeeper的log路径
+clientPort=2181   #指定Client连接端口，对外唯一
+server.1=localhost:2888:3888     #指定server node，及其服务端口。localhost可切换为主机名
 server.2=localhost:2889:3889
 server.3=localhost:2890:3890</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173242.png"></p>
@@ -201,51 +201,51 @@ export HADOOP_HOME PATH</code></pre>
 <p>因为这两个文件是环境变量文件，所以修改前建议先复制</p>
 <p>修改文件的JAVA_HOME</p>
 <pre><code class="bash">[hadoop@promote hadoop]$cp hadoop-env.sh hadoop-env.shark
-[hadoop@promote hadoop]$vi hadoop-env.sh</code></pre>
+[hadoop@promote hadoop]$vi hadoop-env.sh    --系统运行环境参数</code></pre>
 <pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171532.png"></p>
 <pre><code class="bash">[hadoop@promote hadoop]$cp yarn-env.sh  yarn-env.shark
-[hadoop@promote hadoop]$vi yarn-env.sh</code></pre>
+[hadoop@promote hadoop]$vi yarn-env.sh  --yarn环境参数</code></pre>
 <pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201   这里需去掉注释“#”</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171751.png"></p>
 <p>修改.xml文件</p>
 <p>修改此类文件，只需将变量添加到<configuration><configuration>之间</configuration></configuration></p>
 <p>修改core-site.xml</p>
-<pre><code class="bash">[hadoop@promote hadoop]$vi core-site.xml </code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$vi core-site.xml   --指定Hadoop的访问路径，即Hadoop的主节点服务器及端口号</code></pre>
 <pre><code class="tiki">&lt;property&gt;
 &lt;name&gt;fs.defaultFS&lt;/name&gt;
-&lt;value&gt;hdfs://localhost:9000&lt;/value&gt;
+&lt;value&gt;hdfs://localhost:9000&lt;/value&gt;   #Hadoop 的访问路径
 &lt;/property&gt;
 &lt;property&gt;
 &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
-&lt;value&gt;/hadoop/tmp&lt;/value&gt;
+&lt;value&gt;/hadoop/tmp&lt;/value&gt;           #Hadoop 本地临时存放路径
 &lt;/property&gt;
 </code></pre>
 <p>修改hdfs-site.xml</p>
-<pre><code class="bash">[hadoop@promote hadoop]$vi hdfs-site.xml </code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$vi hdfs-site.xml    --指定HDFS主要配置参数</code></pre>
 <pre><code class="tiki">&lt;property&gt;
-&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
+&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;   #指定HDFS的主节点元数据文件的本地存放路径
 &lt;value&gt;/hadoop/name&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
+&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  #指定HDFS的数据节点数据文件的本地存放路径
 &lt;value&gt;/hadoop/data&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;dfs.replication&lt;/name&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;     #指定HDFS的数据分块的备份数量
 &lt;value&gt;1&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p>用mapred-site.xml.template生成.xml文件并进行修改</p>
 <pre><code class="bash">[hadoop@promote hadoop]$cp mapred-site.xml.template mapred-site.xml
-[hadoop@promote hadoop]$vi mapred-site.xml</code></pre>
+[hadoop@promote hadoop]$vi mapred-site.xml  --指定MapReduce服务的配置</code></pre>
 <pre><code class="tiki">&lt;property&gt;
-&lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;   #指定MapReduce所使用的外部管理框架，值为yarn
 &lt;value&gt;yarn&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p>修改 yarn-site.xml</p>
-<pre><code class="bash">[hadoop@promote hadoop]$vi yarn-site.xml </code></pre>
+<pre><code class="bash">[hadoop@promote hadoop]$vi yarn-site.xml    --yarn服务的配置</code></pre>
 <pre><code class="tiki">&lt;property&gt;
-&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    #指定NodeManager上运行的附属服务的类型
 &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20172226.png"></p>
@@ -312,19 +312,19 @@ export HBASE_MANAGES_ZK=false</code></pre>
 <p>修改hbase-site.xml文件</p>
 <pre><code class="bash">[hadoop@promote conf]$vi hbase-site.xml</code></pre>
 <pre><code class="tiki">&lt;property&gt;
-&lt;name&gt;hbase.rootdir&lt;/name&gt;
-&lt;value&gt;hdfs://localhost:9000/user/root/hbase&lt;/value&gt;    注：/user/root可根据自己路径进性修改
+&lt;name&gt;hbase.rootdir&lt;/name&gt;    #指定HBase数据库的存放路径
+&lt;value&gt;hdfs://localhost:9000/user/root/hbase&lt;/value&gt;    #注：/user/root可根据自己路径进性修改
 &lt;/property&gt;                                                 
 &lt;property&gt;
-&lt;name&gt;hbase.tmp.dir&lt;/name&gt;
+&lt;name&gt;hbase.tmp.dir&lt;/name&gt;  #指定HBase的元数据的本地存放路径
 &lt;value&gt;/hbase/tmp&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
+&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  #指定HBase的分布式集群模式为开启状态
 &lt;value&gt;true&lt;/value&gt;
 &lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+&lt;property&gt; 
+&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;    #指定Zookeeper的连接地址，多个用“,”分隔
 &lt;value&gt;localhost:2181,localhost:2182,localhost:2183&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p>启动habase</p>
@@ -348,7 +348,11 @@ export HBASE_MANAGES_ZK=false</code></pre>
 hbase(main):001:0&gt; create &#39;table（表名）&#39;,&#39;id&#39;,&#39;name&#39;</code></pre>
 <p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20092209.png"></p>
 <p>到这里伪分布式平台搭建完毕！</p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-Zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">二.Zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-Hadoop%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">三.Hadoop的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-Hbase%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">5.</span> <span class="toc-text">四.Hbase的安装</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">&lt; 数据通信</a><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><h5 id="登录hadoop网页"><a href="#登录hadoop网页" class="headerlink" title="登录hadoop网页"></a>登录hadoop网页</h5><p>在终端中输入ifconfig,查看系统的ip地址</p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-28%20163457.png"></p>
+<p>打开火狐浏览器，输入ip地址，端口号为50070</p>
+<p><img src="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-28%20163346.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">https://www.sourcex99.top/2020/09/25/Zookeeper-Hadoop-Hbase整合平台搭建（伪分布模式）/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/Zookeeper-Hadoop-Hbase/">Zookeeper Hadoop Hbase</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E5%B9%B3%E5%8F%B0%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">伪分布式平台架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-JDK%E7%9A%84%E5%8D%B8%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">一.JDK的卸载与安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-Zookeeper%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">3.</span> <span class="toc-text">二.Zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-Hadoop%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">三.Hadoop的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-Hbase%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">5.</span> <span class="toc-text">四.Hbase的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="toc-number">6.</span> <span class="toc-text">补充：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%99%BB%E5%BD%95hadoop%E7%BD%91%E9%A1%B5"><span class="toc-number">6.0.1.</span> <span class="toc-text">登录hadoop网页</span></a></li></ol></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">&lt; 数据通信</a><a class="next" href="/2020/09/24/Hexo%E5%8D%9A%E5%AE%A2%E6%97%A0%E6%B3%95%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">Hexo博客无法插入图片问题的解决 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
