@@ -449,7 +449,100 @@ Router(config-if)#ip address 12.1.2.2 255.255.255.0
 Router(config-if)#exit
 Router(config)#ip route 0.0.0.0 0.0.0.0 12.1.2.1</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-29%20095010.png"></p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<h3 id="实验八-远程登录"><a href="#实验八-远程登录" class="headerlink" title="实验八 远程登录"></a>实验八 远程登录</h3><pre><code class="bash">Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 192.168.1.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#enable password 123     #配置enable密码
+Router(config)#line vty 0 5            #vty有0-15，可通过line vty ?查看
+Router(config-line)#password 123      #配置远程登录密码
+Router(config-line)#login
+Router(config-line)#exit</code></pre>
+<p>Prompt端远程登录</p>
+<pre><code class="bash">PC&gt;ping 192.168.1.254             #测试设备是否可以ping通
+PC&gt;telnet 192.168.1.254           #远程登录</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20105740.png"></p>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20115339.png"></p>
+<h3 id="实验九-DHCP配置"><a href="#实验九-DHCP配置" class="headerlink" title="实验九 DHCP配置"></a>实验九 DHCP配置</h3><p>什么是DHCP？</p>
+<p>DHCP(Dynamic Host Configuration Protocol)是一种动态的向Internet终端提供配置参数的协议。在终端提出申请之后，DHCP可以向终端提供IP地址、网关、DNS服务器地址等参数</p>
+<pre><code class="bash">***********************简单的DHCP配置***************************
+
+Router&gt;en
+Router#conf t
+Router(config)#inte g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 192.168.1.254 255.255.255.0
+Router(config-if)#exit
+Router(config)#ip dhcp pool poo11             #创建一个dhcp池，池的名称自定义
+Router(dhcp-config)#network 192.168.1.0 255.255.255.0   #配置192.168.1.0的网段和子网掩码
+Router(dhcp-config)#default-router 192.168.1.254        #配置网关
+Router(dhcp-config)#dns-server 0.0.0.0      #配置dns
+Router(dhcp-config)#exit
+</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20110722.png"></p>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20110606.png"></p>
+<pre><code class="bash">********************三层路由交换机不同网段的DHCP配置*********************
+****************二层交换机的配置********************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/5
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+Switch(config)#inter fa0/4
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+****************三层路由交换机的配置*****************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/5
+Switch(config-if)#switchport trunk encapsulation dot1q 
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter vlan 10
+Switch(config-if)#ip address 192.168.1.254 255.255.255.0
+Switch(config-if)#exit
+Switch(config)#ip routing
+Switch(config)#inter vlan 20
+Switch(config-if)#ip address 192.168.2.254 255.255.255.0
+Switch(config-if)#exit
+Switch(config)#ip routing
+
+*******************DHCP的配置**************************
+Switch(config)#ip dhcp pool pool1
+Switch(dhcp-config)#network 192.168.1.0 255.255.255.0
+Switch(dhcp-config)#default-router 192.168.1.254
+Switch(dhcp-config)#dns-server 8.8.8.8
+Switch(dhcp-config)#exit
+Switch(config)#ip dhcp pool pool2
+Switch(dhcp-config)#network 192.168.2.0 255.255.255.0
+Switch(dhcp-config)#default-router 192.168.2.254
+Switch(dhcp-config)#dns-server 8.8.8.8
+Switch(dhcp-config)#exit</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20113715.png"></p>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20113516.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AB-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">实验八 远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D-DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.</span> <span class="toc-text">实验九 DHCP配置</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
