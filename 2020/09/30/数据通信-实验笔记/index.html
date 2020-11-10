@@ -73,7 +73,7 @@ Router#show vlan   查看vlan
 Router#show run    查看当前运行信息
 Router#show arp    查看arp
 Router#show ip route  查看ip route</code></pre>
-<h3 id="实验三-三层交换"><a href="#实验三-三层交换" class="headerlink" title="实验三   三层交换"></a>实验三   三层交换</h3><pre><code class="bash">配置交换机左
+<h3 id="实验三-三层路由"><a href="#实验三-三层路由" class="headerlink" title="实验三   三层路由"></a>实验三   三层路由</h3><pre><code class="bash">配置交换机左
 Switch(config)#vlan 100       创建vlan 100
 Switch(config-vlan)#exit
 Switch(config)#vlan 200       创建vlan 200
@@ -110,7 +110,8 @@ Switch(config-if)#switchport mode access
 Switch(config-if)#switchport access vlan 200
 Switch(config-if)#exit
 
-配置路由交换机
+配置三层交换机
+方法一:在三层交换机上创建新端口，将所有vlan都封装进去
 Switch(config)#vlan 100     创建vlan 100
 Switch(config-vlan)#exit
 Switch(config)#vlan 200     创建vlan 200
@@ -127,7 +128,24 @@ Switch(config)#ip routing   启动路由（配置模式）
 Switch(config)#inter vlan 200
 Switch(config-if)#ip address 192.168.2.254 255.255.255.0
 Switch(config-if)#exit
-Switch(config)#ip routing</code></pre>
+Switch(config)#ip routing
+
+方法二:单独配置f0/1,f0/2端口
+Switch(config)#vlan 100 
+Switch(config-vlan)#vlan 200
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport trunk encapsulation dot1q  封装   由于路由交换机的限制，不能直接使用trunk,需先开通 
+Switch(config-if)#switchport mode trunk      
+Switch(config-if)#switchport trunk allowed vlan 100,200
+Switch(config-if)#exit
+
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport trunk encapsulation dot1q  封装   由于路由交换机的限制，不能直接使用trunk,需先开通 
+Switch(config-if)#switchport mode trunk      
+Switch(config-if)#switchport trunk allowed vlan 100,200
+Switch(config-if)#exit
+</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-14%20190423.png"></p>
 <h3 id="实验四-三层交换机链路聚合"><a href="#实验四-三层交换机链路聚合" class="headerlink" title="实验四 三层交换机链路聚合"></a>实验四 三层交换机链路聚合</h3><pre><code class="tiki">端口聚合
 概念：端口聚合又称聚合端口，聚合链路，以太通道（EtherChannel）。他是把同一台交换机上多个特性相同的物理端口捆绑在一起，形成一个逻辑的端口。</code></pre>
@@ -139,10 +157,6 @@ Switch(config)#vlan 10
 Switch(config-vlan)#exit
 Switch(config)#vlan 20
 Switch(config-vlan)#exit
-Switch(config)#inter f0/3
-Switch(config-if)#switchport mode trunk 
-Switch(config-if)#switchport trunk allowed vlan 10,20
-Switch(config-if)#exit
 Switch(config)#inter f0/1
 Switch(config-if)#switchport mode access 
 Switch(config-if)#switchport access vlan 10
@@ -151,6 +165,18 @@ Switch(config)#inter f0/2
 Switch(config-if)#switchport mode access 
 Switch(config-if)#switchport access vlan 20
 Switch(config-if)#exit
+Switch(config)#inter port-channel 1             创建聚合端口
+Switch(config-if)#exit
+Switch(config)#inter f0/3                       将物理端口f0/3加入到端口中，端口模型的选择可以用‘?’来查看并选择
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter f0/4                       将物理端口f0/3加入到端口中，端口模型的选择可以用‘?’来查看并选择
+Switch(config-if)#channel-group 1 mode on
+Switch(config)#inter port-channel 1
+Switch(config-if)#switchport mode trunk                 封装
+Switch(config-if)#switchport trunk allowed vlan 10,20   因为左边vlan有10，20，不需要将所有的vlan都加进去
+Switch#show etherchannel port-channel 
+Switch#show etherchannel summary 
 
 二层交换机（右）
 Switch&gt;en
@@ -159,10 +185,6 @@ Switch(config)#vlan 30
 Switch(config-vlan)#exit
 Switch(config)#vlan 40
 Switch(config-vlan)#exit
-Switch(config)#inter f0/3
-Switch(config-if)#switchport mode trunk 
-Switch(config-if)#switchport trunk allowed vlan 30,40
-Switch(config-if)#exit
 Switch(config)#inter f0/1
 Switch(config-if)#switchport mode access 
 Switch(config-if)#switchport access vlan 30
@@ -171,6 +193,19 @@ Switch(config)#inter f0/2
 Switch(config-if)#switchport mode access 
 Switch(config-if)#switchport access vlan 40
 Switch(config-if)#exit
+Switch(config)#inter port-channel 1
+Switch(config-if)#exit
+Switch(config)#inter f0/3
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter f0/4
+Switch(config-if)#channel-group 1 mode on
+Switch(config)#inter port-channel 1
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#switchport trunk allowed vlan 30,40
+Switch(config-if)#exit
+Switch#show etherchannel port-channel 
+Switch#show etherchannel summary 
 
 三层交换机
 Switch&gt;en
@@ -181,11 +216,6 @@ Switch(config-vlan)#vlan 20
 Switch(config-vlan)#vlan 30
 Switch(config-vlan)#vlan 40
 Switch(config-vlan)#exit
-Switch(config)#inter f0/3
-Switch(config-if)#switchport trunk encapsulation dot1q 
-Switch(config-if)#switchport mode trunk 
-Switch(config-if)#switchport trunk allowed vlan 10,20,30,40
-Switch(config-if)#exit
 Switch(config)#inter vlan 10
 Switch(config-if)#ip address 192.168.1.254 255.255.255.0
 Switch(config-if)#exit
@@ -207,42 +237,6 @@ Switch(config-if)#ip ad
 Switch(config-if)#ip address 192.168.4.254 255.255.255.0
 Switch(config-if)#exit
 
-********************链路聚合端口配置*************************
-
-二层交换机配置与其三层交换机相连的端口
-二层交换机（左）
-Switch&gt;en
-Switch#conf t
-Switch(config)#inter port-channel 1             创建聚合端口
-Switch(config-if)#exit
-Switch(config)#inter f0/3                       将物理端口f0/3加入到端口中，端口模型的选择可以用‘?’来查看并选择
-Switch(config-if)#channel-group 1 mode on
-Switch(config-if)#exit
-Switch(config)#inter f0/4                       将物理端口f0/3加入到端口中，端口模型的选择可以用‘?’来查看并选择
-Switch(config-if)#channel-group 1 mode on
-Switch(config)#inter port-channel 1
-Switch(config-if)#switchport mode trunk                 封装
-Switch(config-if)#switchport trunk allowed vlan 10,20   因为左边vlan有10，20，不需要将所有的vlan都加进去
-Switch(config-if)#exit
-Switch#show etherchannel port-channel           查看接口状态
-Switch#show etherchannel summary                查看详细信息
-
-二层交换机（右）
-Switch&gt;en
-Switch#conf t
-Switch(config)#inter port-channel 1
-Switch(config-if)#exit
-Switch(config)#inter f0/3
-Switch(config-if)#channel-group 1 mode on
-Switch(config-if)#exit
-Switch(config)#inter f0/4
-Switch(config-if)#channel-group 1 mode on
-Switch(config)#inter port-channel 1
-Switch(config-if)#switchport mode trunk 
-Switch(config-if)#switchport trunk allowed vlan 30,40
-Switch(config-if)#exit
-Switch#show etherchannel port-channel 
-Switch#show etherchannel summary 
 
 三层交换机（因为有两个交换机，所以需配置两个链路聚合接口）
 三层交换机配置主机
@@ -434,7 +428,9 @@ Router(config)#inter g0/1
 Router(config-if)#no shutdown 
 Router(config-if)#ip address 12.1.1.1 255.255.255.0
 Router(config-if)#exit
-Router(config)#ip route 0.0.0.0 0.0.0.0 12.1.1.2
+Router(config)#ip route 192.168.1.0 255.255.255.0 12.1.1.1
+Router(config)#ip route 192.168.4.0 255.255.255.0 12.1.2.2
+Router(config)#ip route
 
 **********************Router2默认路由配置**********************
 Router2配置
@@ -542,7 +538,207 @@ Switch(dhcp-config)#dns-server 8.8.8.8
 Switch(dhcp-config)#exit</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20113715.png"></p>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-30%20113516.png"></p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AB-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">实验八 远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D-DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.</span> <span class="toc-text">实验九 DHCP配置</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<h3 id="实验十-综合"><a href="#实验十-综合" class="headerlink" title="实验十 综合"></a>实验十 综合</h3><pre><code class="bash">****************************swtich0配置****************************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+Switch(config)#end
+
+*****************************switch1配置****************************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 30
+Switch(config-vlan)#vlan 40
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 30
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 40
+Switch(config-if)#exit
+Switch(config)#inter port-channel 1
+Switch(config-if)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter fa0/4
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter port-channel 1 
+Switch(config-if)#switchport trunk allowed vlan 30,40
+
+
+******************************switch2配置*************************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+***********************************Route0配置*************************
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/0.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.1.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/0.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.2.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 12.1.1.1 255.255.255.0
+Router(config-if)#exit
+Router(config)#ip route 0.0.0.0 0.0.0.0 12.1.1.2
+Router(config)#ip dhcp pool 1921683                         #dhcp
+Router(dhcp-config)#network 192.168.3.0 255.255.255.0
+Router(dhcp-config)#default-router 192.168.3.254
+Router(dhcp-config)#dns-server 8.8.8.8
+Router(dhcp-config)#exit
+Router(config)#end
+Router#ping 12.1.1.2
+Router(config)#enable password 123       #远程
+Router(config)#line vty 0 5
+Router(config-line)#password 12
+Router(config-line)#password 123
+Router(config-line)#login
+Router(config-line)#end
+
+***********************************Route1配置***********************
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inte g0/0.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.5.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/0.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.6.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#ip dhcp pool 1921685
+Router(dhcp-config)#network 192.168.5.0 255.255.255.0
+Router(dhcp-config)#default-router 192.168.5.254 
+Router(dhcp-config)#dns-server 8.8.8.8
+Router(dhcp-config)#exit
+Router(config)#ip dhcp pool 1921686
+Router(dhcp-config)#network 192.168.6.0 255.255.255.0
+Router(dhcp-config)#default-router 192.168.6.254
+Router(dhcp-config)#dns-server 8.8.8.8
+Router(dhcp-config)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#ip address 12.1.2.2 255.255.255.0
+Router(config-if)#exit
+Router(config)#ip route 0.0.0.0 0.0.0.0 12.1.2.1        #默认路由
+Router(config)#ip dhcp pool 1921684
+Router(dhcp-config)#network 192.168.4.0 255.255.255.0
+Router(dhcp-config)#default-router 192.168.4.254
+Router(dhcp-config)#dns-server 8.8.8.8
+Router(dhcp-config)#end
+Router#ping 12.1.2.1         
+Router#conf t
+Router(config)#enable password 123
+Router(config)#line vty 0 5
+Router(config-line)#pass
+Router(config-line)#password 123
+Router(config-line)#login
+Router(config-line)#end
+
+*****************************三层交换机配置*****************************
+
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 30
+Switch(config-vlan)#vlan 40
+Switch(config-vlan)#exit
+Switch(config)#inter vlan 30
+Switch(config-if)#ip address 192.168.3.254 255.255.255.0
+Switch(config-if)#exi
+Switch(config)#ip routing
+Switch(config)#inter vlan 40
+Switch(config-if)#ip address 192.168.4.254 255.255.255.0
+Switch(config-if)#exit
+Switch(config)#ip routing          
+Switch(config)#inter port-channel 1                           #端口聚合
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter fa0/4
+Switch(config-if)#channel-group 1 mode on
+Switch(config-if)#exit
+Switch(config)#inter port-channel 1 
+Switch(config-if)#switchport trunk encapsulation dot1q 
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#switchport trunk allowed vlan 30,40
+
+Switch(config)#inter vlan 100
+Switch(config-if)#vlan 200
+Switch(config-vlan)#exit
+Switch(config)#inter vlan 100
+Switch(config-if)#ip address 12.1.1.2 255.255.255.0            #交换机配置地址
+Switch(config-if)#exit
+Switch(config)#ip routing
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 100
+Switch(config-if)#exit
+Switch(config)#inter vlan 200
+Switch(config-if)#ip address 12.1.2.1 255.255.255.0
+Switch(config-if)#exit
+Switch(config)#ip routing
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 200
+Switch(config)#ip route 192.168.1.0 255.255.255.0 12.1.1.1
+Switch(config)#ip route 192.168.2.0 255.255.255.0 12.1.1.1
+Switch(config)#ip route 192.168.5.0 255.255.255.0 12.1.2.2
+Switch(config)#ip route 192.168.6.0 255.255.255.0 12.1.2.2
+Switch(config)#inter vlan 30
+Switch(config-if)#ip helper-address 12.1.1.1
+Switch(config-if)#exit
+Switch(config)#inter vlan 40
+Switch(config-if)#ip helper-address 12.1.2.2
+Switch(config-if)#exit
+Switch(config-line)#enable password
+Switch(config)#line vty 0 5
+Switch(config-line)#password 123
+Switch(config-line)#login
+Switch(config-line)#exit
+</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-09%20195215.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AB-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">实验八 远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D-DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.</span> <span class="toc-text">实验九 DHCP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81-%E7%BB%BC%E5%90%88"><span class="toc-number">1.10.</span> <span class="toc-text">实验十 综合</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
