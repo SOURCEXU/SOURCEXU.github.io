@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><meta name="theme-color" content="#2d4356"><meta name="baidu-site-verification"><title>HDFS高可用群集搭建 | SourceX99</title><link rel="stylesheet" type="text/css" href="/css/style.css"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.png"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="SourceX99" type="application/atom+xml">
+</head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">SourceX99</a></h1></div><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">HDFS高可用群集搭建</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/">2020-11-18</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><blockquote>
+<p>添加环境变量</p>
+<p>解压文件</p>
+<p>修改配置文件</p>
+<p>克隆</p>
+<p>修改主机名和网络配置</p>
+</blockquote>
+<p>导入文件</p>
+<p>在根目录下创建software文件夹，将资源包导入</p>
+<p>资源获取地址：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ">https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ</a> 提取码：2a3c</p>
+<p>通过xftp 6 将资源包传输到  /software  目录下</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20152213.png"></p>
+<h3 id="一-添加环境变量"><a href="#一-添加环境变量" class="headerlink" title="一.添加环境变量"></a>一.添加环境变量</h3><p>进入/etc/profile文件添加环境变量</p>
+<pre><code class="bash">[root@promote ]# vi /etc/profile</code></pre>
+<pre><code class="bash">#java environment
+JAVA_HOME=/java/jdk1.8.0_201
+CLASSPATH=.:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/dt.jar
+PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME CLASSPATH PATH
+
+#zookeeper environment
+ZOOKEEPER_HOME=/zookeeper/zookeeper-3.4.13
+PATH=$ZOOKEEPER_HOME/bin:$PATH
+export ZOOKEEPER_HOME PATH
+
+#hadoop environment
+HADOOP_HOME=/hadoop/hadoop-2.7.7
+PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
+export HADOOP_HOME PATH
+
+#hbase environment
+HBASE_HOME=/hbase/hbase-1.2.10
+PATH=$HBASE_HOME/bin:$PATH
+export HBASE_HOME
+
+#hive environment
+HIVE_HOME=/hive/apache-hive-2.1.1-bin
+PATH=$HIVE_HOME/bin:$PATH
+export HIVE_HOME PATH
+
+#Sqoop environment 
+SQOOP_HOME=/sqoop/sqoop-1.99.7-bin-hadoop200
+PATH=$SQOOP_HOME/bin:$PATH
+export SQOOP_HOME SQOOP_SERVER_EXTRA_LIB PATH
+</code></pre>
+<p>source 文件</p>
+<pre><code class="bash">[root@promote ]#source /etc/profile</code></pre>
+<p>查看环境变量</p>
+<pre><code class="bash">[root@promote ]#echo $PATH</code></pre>
+<p>查看java 版本</p>
+<pre><code class="bash">java -version</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202526.png"></p>
+<h3 id="二-解压文件"><a href="#二-解压文件" class="headerlink" title="二.解压文件"></a>二.解压文件</h3><p>在根目录下创建java、zookeeper、hadoop、hbase,分别进入解压</p>
+<pre><code class="bash">[root@promote ]#cd /
+[root@promote /]#mkdir java zookeeper hadoop hbase
+[root@promote /]#cd /java
+[root@promote java]#tar -zxf /software/jdk-8u201-linux-x64.tar.gz
+[root@promote java]#cd /zookeeper/
+[root@promote zookeeper]#tar -zxf /software/zookeeper-3.4.13.tar.gz
+[root@promote zookeeper]#cd /hadoop/
+[root@promote hadoop]#tar -zxf /software/hadoop-2.7.7.tar.gz
+[root@promote hadoop]#cd /hbase
+[root@promote hbase]#tar -zxf /software/hbase-1.2.10-bin.tar.gz</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202557.png"></p>
+<h3 id="三-修改配置文件"><a href="#三-修改配置文件" class="headerlink" title="三.修改配置文件"></a>三.修改配置文件</h3><p>修改 hadoop-env.sh、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-env.sh、yarn-site.xml文件</p>
+<p>修改hadoop-env.sh和yarn-env.sh</p>
+<p>因为这两个文件是环境变量文件，所以修改前建议先复制</p>
+<p>修改文件的JAVA_HOME</p>
+<pre><code class="bash">[root@promote ~]#cd /hadoop/hadoop-2.7.7/etc/hadoop/
+[root@promote hadoop]#cp hadoop-env.sh hadoop-env.shark
+[root@promote hadoop]#vi hadoop-env.sh</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202950.png"></p>
+<pre><code class="bash">[root@promote hadoop]#cp yarn-env.sh  yarn-env.shark
+[root@promote hadoop]#vi yarn-env.sh  --yarn环境参数</code></pre>
+<pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201 </code></pre>
+<p>修改.xml文件</p>
+<p>修改此类文件，只需将变量添加到之间</p>
+<p>修改core-site.xml</p>
+<pre><code class="bash">[root@promote hadoop]#vi core-site.xml   --指定Hadoop的访问路径，即Hadoop的主节点服务器及端口号</code></pre>
+<pre><code class="bash">&lt;property&gt;
+&lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;value&gt;hdfs://localhost:9000&lt;/value&gt;   #Hadoop 的访问路径
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/tmp&lt;/value&gt;           #Hadoop 本地临时存放路径
+&lt;/property&gt;</code></pre>
+<p>修改hdfs-site.xml</p>
+<pre><code class="bash">[root@promote hadoop]#vi hdfs-site.xml</code></pre>
+<pre><code class="bash">&lt;property&gt;
+&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;   #指定HDFS的主节点元数据文件的本地存放路径
+&lt;value&gt;/hadoop/name&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  #指定HDFS的数据节点数据文件的本地存放路径
+&lt;value&gt;/hadoop/data&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;     #指定HDFS的数据分块的备份数量
+&lt;value&gt;1&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>用mapred-site.xml.template生成.xml文件并进行修改</p>
+<pre><code class="bash">[root@promote hadoop]#cp mapred-site.xml.template mapred-site.xml
+[root@promote hadoop]#vi mapred-site.xml</code></pre>
+<pre><code class="bash">&lt;property&gt;
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;   #指定MapReduce所使用的外部管理框架，值为yarn
+&lt;value&gt;yarn&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>修改 yarn-site.xml</p>
+<pre><code class="bash">[root@promote hadoop]#vi yarn-site.xml </code></pre>
+<pre><code class="bash">&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    #指定NodeManager上运行的附属服务的类型
+&lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>修改hbase /conf 目录下的 hbase-env.sh和 hbase-site.xml文件</p>
+<p>修改hbase-env.sh，将下面对应修改的地方添加进去</p>
+<pre><code class="bash">[root@promote hadoop]#cd /hbase/hbase-1.2.10/conf/
+[root@promote conf]#cp hbase-env.sh hbase-env.sh.bak
+[root@promote conf]#vi hbase-env.sh</code></pre>
+<p>添加如下变量</p>
+<pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201/
+export HBASE_CLASSPATH=/hadoop/hadoop-2.7.7/etc/hadoop
+export HBASE_LOG_DIR=/hbase/logs
+export HBASE_MANAGES_ZK=false</code></pre>
+<p>修改hbase-site.xml文件</p>
+<pre><code class="bash">[root@promote conf]#vi hbase-site.xml</code></pre>
+<pre><code class="bash">&lt;property&gt;
+&lt;name&gt;hbase.rootdir&lt;/name&gt;    #指定HBase数据库的存放路径
+&lt;value&gt;hdfs://localhost:9000/user/root/hbase&lt;/value&gt;    #注：/user/root可根据自己路径进性修改
+&lt;/property&gt;                                                 
+&lt;property&gt;
+&lt;name&gt;hbase.tmp.dir&lt;/name&gt;  #指定HBase的元数据的本地存放路径
+&lt;value&gt;/hbase/tmp&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  #指定HBase的分布式集群模式为开启状态
+&lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt; 
+&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;    #指定Zookeeper的连接地址，多个用“,”分隔
+&lt;value&gt;localhost:2181,localhost:2182,localhost:2183&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+<p>关闭防火墙</p>
+<pre><code class="bash">[root@promote conf]#systemctl stop firewalld
+[root@promote conf]#systemctl disable firewalld</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20203845.png"></p>
+<h3 id="四-克隆"><a href="#四-克隆" class="headerlink" title="四.克隆"></a>四.克隆</h3><p>在Vmware workstation中克隆两台主机，共创建三台主机</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20204009.png"></p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20204201.png"></p>
+<h3 id="五-修改主机名和网络配置"><a href="#五-修改主机名和网络配置" class="headerlink" title="五.修改主机名和网络配置"></a>五.修改主机名和网络配置</h3><p>采用远程登录的方式操作主机</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20214708.png"></p>
+<p>修改网络配置</p>
+<p>三台虚拟机同时进行如下操作</p>
+<p>将  BOOTPROTO=”dhcp” 注释掉，然后添加网络，网络的主机号一般在200以上</p>
+<pre><code class="bash">[root@promote conf]#cd /etc/sysconfig/network-scripts/</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20234845.png"></p>
+<p>重启网络</p>
+<pre><code class="bash">[root@promote conf]#systemctl restart network</code></pre>
+<p>修改hostname</p>
+<pre><code class="bash">[root@promote conf]#vi /etc/hostname或 hostnamectl set-hostname xxx
+#xxx 为为主机名称</code></pre>
+<p>分别在三台虚拟机中进入hosts，添加ip地址和主机名</p>
+<pre><code class="bash">[root@promote conf]#vi /etc/hosts</code></pre>
+<pre><code>192.168.1.201  cluster1-1  
+192.168.1.202  cluster1-2  
+192.168.1.203  cluster1-3  </code></pre>
+<p>测试</p>
+<p>在Vmware workstation中互ping主机名</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20235914.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/">https://www.sourcex99.top/2020/11/18/HDFS高可用群集搭建/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/HDFS-%E9%9B%86%E7%BE%A4-Centos%EF%BC%88%E6%9C%80%E5%B0%8F%E5%8C%96%E5%AE%89%E8%A3%85%EF%BC%89/">HDFS 集群 Centos（最小化安装）</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">一.添加环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">二.解压文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">三.修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E5%85%8B%E9%9A%86"><span class="toc-number">4.</span> <span class="toc-text">四.克隆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94-%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%92%8C%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">五.修改主机名和网络配置</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="next" href="/2020/10/28/CenstOS%E7%B3%BB%E7%BB%9FMySQL%E9%85%8D%E7%BD%AE/">Censtos系统MySQL配置 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+.night .v[data-class=v] a:hover { color: #216C73 !important; }
+.night .v[data-class=v] li { list-style: inherit; }
+.night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
+.night .v[data-class=v] .vwrap:hover { box-shadow: 0 0 6px 1px #223441; }
+.night .v[data-class=v] .vbtn { border-radius: 0; background: none; }
+.night .v[data-class=v] .vlist .vcard .vh { border-bottom-color: #293D4E; }
+.night .v[data-class=v] .vwrap .vheader .vinput { border-bottom-color: #223441; }
+.night .v[data-class=v] .vwrap .vheader .vinput:focus { border-bottom-color: #339EB4; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre,.night .v[data-class=v] .vlist .vcard .vhead .vsys { background: #203240 !important; }
+.night .v[data-class=v] code, .night .v[data-class=v] pre { color: #F0F0F0; font-size: 95%; }
+.v[data-class=v] .vcards .vcard .vh {border-bottom-color: #223441; }
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:before {background: linear-gradient(180deg,rgba(38,57,73,.4),rgba(38,57,73,.9));}
+.night .v[data-class=v] .vcards .vcard .vcontent.expand:after {background: rgba(38,57,73,.9)}
+</style><div id="vcomment"></div><script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script><script>var notify = 'false' == true ? true : false;
+var verify = 'false' == true ? true : false;
+var GUEST_INFO = ['nick','mail','link'];
+var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+  return GUEST_INFO.indexOf(item) > -1
+});
+guest_info = guest_info.length == 0 ? GUEST_INFO :guest_info;
+window.valine = new Valine({
+  el:'#vcomment',
+  notify:notify,
+  verify:verify,
+  appId:'0WsDSFa215v3chGgKoRP2Uan-gzGzoHsz',
+  appKey:'hRSFPXd4dBVvyC5qVJgwTGRw',
+  lang: 'zh-cn',
+  placeholder:'ヾﾉ≧∀≦)o Come on, say something...',
+  avatar:'identicon',
+  guest_info:guest_info,
+  pageSize:'10'
+})</script></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">SourceX99</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+    search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.1" async></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
