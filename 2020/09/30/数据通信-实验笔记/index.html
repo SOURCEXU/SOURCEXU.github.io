@@ -1057,7 +1057,7 @@ Router(config-router)#network 12.1.3.0
 Router(config-router)#network 192.168.2.0
 Router(config-router)#exit</code></pre>
 <p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20192400.png"></p>
-<h3 id="实验十四-ACL"><a href="#实验十四-ACL" class="headerlink" title="实验十四 ACL"></a>实验十四 ACL</h3><pre><code class="bash">**************************Switch1**********************
+<h3 id="实验十四-ACL（Standard）"><a href="#实验十四-ACL（Standard）" class="headerlink" title="实验十四 ACL（Standard）"></a>实验十四 ACL（Standard）</h3><pre><code class="bash">**************************Switch1**********************
 Switch&gt;en
 Switch#conf t
 Switch(config)#vlan 10
@@ -1133,9 +1133,196 @@ Router(config)#ip access-list standard 1
 Switch(config-std-nacl)#permit 192.168.1.0 0.0.0.255  #控制192.168.1.0网段的通信
 Switch(config-std-nacl)#permit 192.168.1.1 0.0.0.0    #控制某台主机的通信
 </code></pre>
-<pre><code class="bash">Router(config)#access-list 1 deny 192.168.1.0 0.0.0.255 #控制192.168.1.0网段的通信</code></pre>
-<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-20%20155301.png"></p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AB-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">实验八 远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D-DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.</span> <span class="toc-text">实验九 DHCP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81-%E7%BB%BC%E5%90%88"><span class="toc-number">1.10.</span> <span class="toc-text">实验十 综合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%B8%80-%E6%9C%8D%E5%8A%A1%E5%99%A8DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.11.</span> <span class="toc-text">实验十一 服务器DHCP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%BA%8C-RIP"><span class="toc-number">1.12.</span> <span class="toc-text">实验十二 RIP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%B8%89-RIP-2"><span class="toc-number">1.13.</span> <span class="toc-text">实验十三 RIP-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E5%9B%9B-ACL"><span class="toc-number">1.14.</span> <span class="toc-text">实验十四 ACL</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<pre><code class="bash">Router(config)#access-list 1 deny 192.168.1.0 0.0.0.255 #控制192.168.1.0网段的通信(%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-20%20155301.png)</code></pre>
+<h3 id><a href="#" class="headerlink" title></a><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-20%20155301.png"></h3><h3 id="实验十五-ACL-Extended"><a href="#实验十五-ACL-Extended" class="headerlink" title="实验十五 ACL(Extended)"></a>实验十五 ACL(Extended)</h3><p>PC0 可以与PC2通信，不可以与PC3通信 </p>
+<pre><code class="bash">***************************Switch0*************************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+***************************Switch1*************************
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+
+****************************Router0************************
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/0.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.1.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/0.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.2.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/1.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.3.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/1.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.4.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#ip access-list extended 100
+Router(config-ext-nacl)#permit ip host 192.168.1.1 host 192.168.3.1
+Router(config-ext-nacl)#deny ip host 192.168.1.1 host 192.168.4.1
+Router(config-ext-nacl)#exit
+Router(config)#end
+Router#show access-lists 
+Router#conf t
+Router(config)#inter g0/0.1
+Router(config-subif)#ip access-group 100 in    #此时g0/0.1端口为输入端（源ip）
+Router(config-subif)#exit</code></pre>
+<p>两种写法等价</p>
+<pre><code class="bash">Router(config-ext-nacl)#permit ip host 192.168.1.1 host 192.168.3.1
+Router(config-ext-nacl)#permit ip 192.168.1.1  0.0.0.0 192.168.3.1 0.0.0.0 </code></pre>
+<p>PC0 可以与PC2通信，不可以与PC3通信 </p>
+<pre><code class="bash">Router(config)#ip access-list extended 100
+Router(config-ext-nacl)#permit ip host 192.168.1.1 host 192.168.3.1
+Router(config-ext-nacl)#deny ip host 192.168.1.1 host 192.168.4.1
+Router(config-ext-nacl)#exit
+Router(config)#end
+Router#show access-lists 
+Router#conf t
+Router(config)#inter g0/1.1
+Router(config-subif)#ip access-group 100 out  #此时g0/1.1为输出端(目的ip)
+Router(config-subif)#exit
+Router(config)#inter g0/1.2
+Router(config-subif)#ip ac
+Router(config-subif)#ip access-group 100 out
+Router(config-subif)#end
+Router#show access-lists 
+</code></pre>
+<p>PC2与PC0通信，PC3与PC0通信n</p>
+<pre><code class="bash">Router(config)#ip access-list extended 100
+Router(config-ext-nacl)#permit ip host 192.168.3.1 host 192.168.1.1
+Router(config-ext-nacl)#deny ip host 192.168.4.1 host 192.168.1.1
+Router(config-ext-nacl)#exit
+Router(config)#end
+Router#show access-lists 
+Router#conf t
+Router(config)#inter g0/0.1
+Router(config-subif)#ip access-group 100 out #此时g0/1.1为输出端(目的ip)
+Router(config-subif)#exit
+</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-25%20123147.png"></p>
+<h3 id="实验十六-ACL（远程控制）"><a href="#实验十六-ACL（远程控制）" class="headerlink" title="实验十六 ACL（远程控制）"></a>实验十六 ACL（远程控制）</h3><p>题目：</p>
+<p>1.路由器开启远程登录</p>
+<p>2.PC0/PC2可以ping通路由器，但是不可以远程登录路由器</p>
+<p>3.PC1/PC3可以远程登录路由器，也可以ping通路由器</p>
+<p>注：telnet 类属于tcp ，端口号：23</p>
+<pre><code class="bash">*******************************Switch0****************************
+Switch&gt;en
+Switch#conf t
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+*******************************Switch1****************************
+Switch(config)#vlan 10
+Switch(config-vlan)#vlan 20
+Switch(config-vlan)#exit
+Switch(config)#inter fa0/3
+Switch(config-if)#switchport mode trunk 
+Switch(config-if)#switchport trunk allowed vlan 10,20
+Switch(config-if)#exit
+Switch(config)#inter fa0/1
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 10
+Switch(config-if)#exit
+Switch(config)#inter fa0/2
+Switch(config-if)#switchport mode access 
+Switch(config-if)#switchport access vlan 20
+Switch(config-if)#exit
+
+
+*******************************Router0****************************
+Router&gt;en
+Router#conf t
+Router(config)#inter g0/0
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/0.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.1.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/0.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.2.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/1
+Router(config-if)#no shutdown 
+Router(config-if)#exit
+Router(config)#inter g0/1.1
+Router(config-subif)#encapsulation dot1Q 10
+Router(config-subif)#ip address 192.168.3.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#inter g0/1.2
+Router(config-subif)#encapsulation dot1Q 20
+Router(config-subif)#ip address 192.168.4.254 255.255.255.0
+Router(config-subif)#exit
+Router(config)#ip access-list extended 120
+Router(config-ext-nacl)#deny tcp host 192.168.1.1 host 192.168.1.254 eq telnet 
+Router(config-ext-nacl)#deny tcp host 192.168.1.1 host 192.168.3.254 eq telnet 
+Router(config-ext-nacl)#deny tcp host 192.168.3.1 host 192.168.3.254 eq telnet 
+Router(config-ext-nacl)#deny tcp host 192.168.3.1 host 192.168.1.254 eq telnet 
+Router(config-ext-nacl)#permit ip any any 
+Router(config-ext-nacl)#exit
+Router(config)#end
+Router#show access-lists 
+Router#conf t
+Router(config)#inter g0/0.1
+Router(config-subif)#ip access-group 120 in （源ip）
+Router(config-subif)#exit
+Router(config)#inter g0/1.1
+Router(config-subif)#ip access-group 120 in (源ip)
+Router(config-subif)#end</code></pre>
+<p><img src="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-25%20201543.png"></p>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/09/30/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/">https://www.sourcex99.top/2020/09/30/数据通信-实验笔记/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">组网 实验 笔记 Cisco Packet Tracer</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%B0%8F%E8%A7%84%E6%A8%A1%E5%B1%80%E5%9F%9F%E7%BD%91%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">一.小规模局域网建设</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%80-%E4%BA%8C%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">实验一 二层交换机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%8C-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2"><span class="toc-number">1.2.</span> <span class="toc-text">实验二  三层交换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%89-%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.3.</span> <span class="toc-text">实验三   三层路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%9B%9B-%E4%B8%89%E5%B1%82%E4%BA%A4%E6%8D%A2%E6%9C%BA%E9%93%BE%E8%B7%AF%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">实验四 三层交换机链路聚合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BA%94-%E5%8D%95%E8%87%82%E8%B7%AF%E7%94%B1"><span class="toc-number">1.5.</span> <span class="toc-text">实验五 单臂路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AD-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1"><span class="toc-number">1.6.</span> <span class="toc-text">实验六 IP路由基础–静态路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B8%83-IP%E8%B7%AF%E7%94%B1%E5%9F%BA%E7%A1%80%E2%80%93%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1"><span class="toc-number">1.7.</span> <span class="toc-text">实验七 IP路由基础–默认路由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%85%AB-%E8%BF%9C%E7%A8%8B%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">实验八 远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%B9%9D-DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.</span> <span class="toc-text">实验九 DHCP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81-%E7%BB%BC%E5%90%88"><span class="toc-number">1.10.</span> <span class="toc-text">实验十 综合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%B8%80-%E6%9C%8D%E5%8A%A1%E5%99%A8DHCP%E9%85%8D%E7%BD%AE"><span class="toc-number">1.11.</span> <span class="toc-text">实验十一 服务器DHCP配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%BA%8C-RIP"><span class="toc-number">1.12.</span> <span class="toc-text">实验十二 RIP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%B8%89-RIP-2"><span class="toc-number">1.13.</span> <span class="toc-text">实验十三 RIP-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E5%9B%9B-ACL%EF%BC%88Standard%EF%BC%89"><span class="toc-number">1.14.</span> <span class="toc-text">实验十四 ACL（Standard）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.15.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E4%BA%94-ACL-Extended"><span class="toc-number">1.16.</span> <span class="toc-text">实验十五 ACL(Extended)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8D%81%E5%85%AD-ACL%EF%BC%88%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6%EF%BC%89"><span class="toc-number">1.17.</span> <span class="toc-text">实验十六 ACL（远程控制）</span></a></li></ol></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/10/15/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF-VMware-Workstation-Pro/">&lt; 虚拟化技术</a><a class="next" href="/2020/09/25/Zookeeper-Hadoop-Hbase%E6%95%B4%E5%90%88%E5%B9%B3%E5%8F%B0%E6%90%AD%E5%BB%BA%EF%BC%88%E4%BC%AA%E5%88%86%E5%B8%83%E6%A8%A1%E5%BC%8F%EF%BC%89/">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
