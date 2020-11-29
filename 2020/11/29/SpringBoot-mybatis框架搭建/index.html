@@ -9,7 +9,8 @@
 </blockquote>
 <p>前述：</p>
 <p>最近在做一个博客项目，用到java Spring框架，网上参考了很多教程，但依然有些地方说的不具体，在此，将搭建过程记录一下</p>
-<p>本博文主要参考教程：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/541874714907">https://www.jianshu.com/p/541874714907</a></p>
+<p>本博文主要参考教程：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/541874714907">https://www.jianshu.com/p/541874714907</a></p>
 <p>在此表示感谢！！！</p>
 <h3 id="一-创建SpringBoot项目"><a href="#一-创建SpringBoot项目" class="headerlink" title="一.创建SpringBoot项目"></a>一.创建SpringBoot项目</h3><p>选择Sping Initializr</p>
 <p><img src="/2020/11/29/SpringBoot-mybatis%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-29%20231628.png"></p>
@@ -47,7 +48,7 @@
 <p><img src="/2020/11/29/SpringBoot-mybatis%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-29%20232030.png"></p>
 <h3 id="三-创建文件结构"><a href="#三-创建文件结构" class="headerlink" title="三.创建文件结构"></a>三.创建文件结构</h3><p>创建如下的文件结构</p>
 <p><img src="/2020/11/29/SpringBoot-mybatis%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-29%20231547.png"></p>
-<h3 id="四-修改和创建实体类"><a href="#四-修改和创建实体类" class="headerlink" title="四.修改和创建实体类"></a>四.修改和创建实体类</h3><p>编写实体类com.zhg.demo.mybatis.entity.User</p>
+<h3 id="四-修改和创建实体类"><a href="#四-修改和创建实体类" class="headerlink" title="四.修改和创建实体类"></a>四.修改和创建实体类</h3><p>编写实体类com.xmy.demo.mybatis.entity.User</p>
 <pre><code>package com.xmy.demo.mybatisdemo.entity;
 
 import java.io.Serializable;
@@ -94,7 +95,7 @@ public class User implements Serializable &#123;
                 &#39;&#125;&#39;;
     &#125;
 &#125;</code></pre>
-<p>编写接口com.zhg.demo.mybatis.mapper.UserMapper</p>
+<p>编写接口com.xmy.demo.mybatis.mapper.UserMapper</p>
 <p><strong>注意</strong>：需要使用@Mapper注解，不然SpringBoot无法扫描</p>
 <pre><code class="bash">@Mapper//指定这是一个操作数据库的mapper
 public interface UserMapper &#123;
@@ -109,7 +110,7 @@ public interface UserMapper &#123;
         SELECT * FROM tb_user
     &lt;/select&gt;
 &lt;/mapper&gt;</code></pre>
-<p>编写接口com.zhg.demo.mybatis.service</p>
+<p>编写接口com.xmy.demo.mybatis.service</p>
 <pre><code class="bash">public interface UserService &#123;
     List&lt;User&gt; findAll();
 &#125;</code></pre>
@@ -126,7 +127,7 @@ public class UserServiceimpl implements UserService &#123;
         return userMapper.findAll();
     &#125;
 &#125;</code></pre>
-<p>编写api接口com.zhg.demo.mybatis.controller.UserController</p>
+<p>编写api接口com.xmy.demo.mybatis.controller.UserController</p>
 <pre><code class="bash">@RestController
 @RequestMapping(&quot;/user&quot;)
 public class UserController &#123;
@@ -178,7 +179,7 @@ mybatis:
   #开启驼峰命名
   configuration:
     map-underscore-to-camel-case: true</code></pre>
-<h3 id="六-启动并测试"><a href="#六-启动并测试" class="headerlink" title="六.启动并测试"></a>六.启动并测试</h3><p>创建数据库和数据表</p>
+<h3 id="六-启动并测试"><a href="#六-启动并测试" class="headerlink" title="六.启动并测试"></a>六.启动并测试</h3><p>创建数据库和数据表(数据库中创建)</p>
 <pre><code>-- ----------------------------
 -- create database
 create database blog
