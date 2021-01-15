@@ -2,16 +2,28 @@
 </head><link rel="stylesheet" type="text/css" href="/plugins/prettify/doxy.css"><script type="text/javascript" src="/js/ready.js" async></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><body class="night"><div class="mobile-head" id="mobile-head"><div class="navbar-icon"><span></span><span></span><span></span></div><div class="navbar-title"><a href="/">LITREILY</a></div><div class="navbar-search"><!--= show a circle here--></div></div><div class="h-wrapper" id="menu"><nav class="h-head box"><div class="m-hdimg"><a class="hdimg img" href="/"><img class="nofancybox" src="/img/profile.jpg" width="128" height="128"></a><h1 class="ttl"><a href="/">SourceX99</a></h1></div><div class="m-nav"><ul><li><span class="dot">●</span><a href="/archives/">归档</a></li><li><span class="dot">●</span><a href="/categories/">分类</a></li><li><span class="dot">●</span><a href="/tags/">标签</a></li><li><span class="dot">●</span><a href="/about/">关于</a></li><li><span class="dot">●</span><a href="/atom.xml">RSS</a></li><li class="m-sch"><form class="form" id="j-formsch" method="get"><input class="txt" type="text" id="local-search-input" name="q" value="搜索" onfocus="if(this.value=='搜索'){this.value='';}" onblur="if(this.value==''){this.value='搜索';}"><input type="text" style="display:none;"></form></li></ul><div id="local-search-result"></div></div></nav></div><div id="back2Top"><a class="fa fa-arrow-up" title="Back to top" href="#"></a></div><div class="box" id="container"><div class="l-wrapper"><div class="l-content box"><div class="l-post l-post-art"><article class="p-art"><div class="p-header box"><h1 class="p-title">HDFS高可用群集搭建</h1><div class="p-info"><span class="p-date"><i class="fa fa-calendar"></i><a href="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/">2020-11-18</a></span><span class="p-view" id="busuanzi_container_page_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_page_pv"></span></span></div></div><div class="p-content"><blockquote>
 <p>添加环境变量</p>
 <p>解压文件</p>
-<p>修改配置文件</p>
-<p>克隆</p>
-<p>修改主机名和网络配置</p>
+<p>关闭防火墙，更改主机名</p>
+<p>配置zookeeper</p>
+<p>配置hadoop</p>
+<p>配置hbase</p>
+<p>关机克隆虚拟机，开机后更改主机名并重新登录</p>
+<p>启动zookeeper</p>
+<p>启动hadoop</p>
+<p>启动hbase</p>
 </blockquote>
 <p>导入文件</p>
 <p>在根目录下创建software文件夹，将资源包导入</p>
+<pre><code class="bash">[hadoop@promote ~]$ cd /
+[hadoop@promote /]$ mkdir software 
+[hadoop@promote /]$ chmod 777 software  #赋予文件夹software权限</code></pre>
 <p>资源获取地址：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ">https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ</a> 提取码：2a3c</p>
 <p>通过xftp 6 将资源包传输到  /software  目录下</p>
 <p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20152213.png"></p>
-<h3 id="一-添加环境变量"><a href="#一-添加环境变量" class="headerlink" title="一.添加环境变量"></a>一.添加环境变量</h3><p>进入/etc/profile文件添加环境变量</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-04%20103308.png"></p>
+<h3 id="一-添加环境变量"><a href="#一-添加环境变量" class="headerlink" title="一.添加环境变量"></a>一.添加环境变量</h3><p>进入root用户</p>
+<pre><code class="bash">[hadoop@promote ~]$ su root
+[root@promote ]# vi /etc/profile</code></pre>
+<p>进入/etc/profile文件添加环境变量</p>
 <pre><code class="bash">[root@promote ]# vi /etc/profile</code></pre>
 <pre><code class="bash">#java environment
 JAVA_HOME=/java/jdk1.8.0_201
@@ -50,8 +62,8 @@ export SQOOP_HOME SQOOP_SERVER_EXTRA_LIB PATH
 <pre><code class="bash">[root@promote ]#echo $PATH</code></pre>
 <p>查看java 版本</p>
 <pre><code class="bash">java -version</code></pre>
-<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202526.png"></p>
-<h3 id="二-解压文件"><a href="#二-解压文件" class="headerlink" title="二.解压文件"></a>二.解压文件</h3><p>在根目录下创建java、zookeeper、hadoop、hbase,分别进入解压</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-04%20103824.png"></p>
+<p>在根目录下创建java、zookeeper、hadoop、hbase,分别进入解压</p>
 <pre><code class="bash">[root@promote ]#cd /
 [root@promote /]#mkdir java zookeeper hadoop hbase
 [root@promote /]#cd /java
@@ -61,114 +73,361 @@ export SQOOP_HOME SQOOP_SERVER_EXTRA_LIB PATH
 [root@promote zookeeper]#cd /hadoop/
 [root@promote hadoop]#tar -zxf /software/hadoop-2.7.7.tar.gz
 [root@promote hadoop]#cd /hbase
-[root@promote hbase]#tar -zxf /software/hbase-1.2.10-bin.tar.gz</code></pre>
-<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202557.png"></p>
-<h3 id="三-修改配置文件"><a href="#三-修改配置文件" class="headerlink" title="三.修改配置文件"></a>三.修改配置文件</h3><p>修改 hadoop-env.sh、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-env.sh、yarn-site.xml文件</p>
+[root@promote hbase]#tar -zxf /software/hbase-1.2.10-bin.tar.gz
+[root@promote hbase]#java -version</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20121157.png"></p>
+<h3 id="三-关闭防火墙，更改主机名"><a href="#三-关闭防火墙，更改主机名" class="headerlink" title="三.关闭防火墙，更改主机名"></a>三.关闭防火墙，更改主机名</h3><pre><code class="bash">[root@promote hbase]# systemctl disable firewalld 下次开机后自动关闭防火墙
+[root@promote hbase]# systemctl stop firewalld   关闭防火墙
+[root@promote hbase]# systemctl status firewalld
+[root@promote hbase]# hostnamectl set-hostname xmy62-1
+[root@promote hbase]#exit    退出
+[hadoop@promote ~]$ su root   重新登录查看</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20121617.png"></p>
+<h3 id="四-配置zookeeper"><a href="#四-配置zookeeper" class="headerlink" title="四.配置zookeeper"></a>四.配置zookeeper</h3><pre><code class="bash">[root@xmy62-1 hbase]cd /zookeeper
+[root@xmy62-1 zookeeper]#ls
+[root@xmy62-1 zookeeper]#mkdir data logs
+[root@xmy62-1 zookeeper]#cd /zookeeper/zookeeper-3.4.12/conf
+[root@xmy62-1 conf]#ll
+[root@xmy62-1 conf]# cp zoo_sample.cfg zoo.cfg
+[root@xmy62-1 conf]# vi zoo.cfg</code></pre>
+<pre><code class="bash">修改
+--注释：
+#dataDir=/tmp/zookeeper
+#clientPort=2181
+--新增：
+dataDir=/zookeeper/data
+dataLogDir=/zookeeper/logs
+clientPort=2181
+server.1=xmy62-1:2888:3888
+server.2=xmy62-2:2888:3888
+server.3=xmy62-3:2888:3888</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20122333.png"></p>
+<pre><code class="bash">在1里面输，2和3克隆之后再输
+[root@xmy62-1 conf]# echo &#39;1&#39; &gt; /zookeeper/data/myid
+[root@xmy62-1 conf]# cat /zookeeper/data/myid </code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20122601.png"></p>
+<h3 id="五-Hadoop配置"><a href="#五-Hadoop配置" class="headerlink" title="五.Hadoop配置"></a>五.Hadoop配置</h3><p>修改 hadoop-env.sh、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-env.sh、yarn-site.xml文件</p>
 <p>修改hadoop-env.sh和yarn-env.sh</p>
 <p>因为这两个文件是环境变量文件，所以修改前建议先复制</p>
 <p>修改文件的JAVA_HOME</p>
-<pre><code class="bash">[root@promote ~]#cd /hadoop/hadoop-2.7.7/etc/hadoop/
-[root@promote hadoop]#cp hadoop-env.sh hadoop-env.shark
-[root@promote hadoop]#vi hadoop-env.sh</code></pre>
-<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20202950.png"></p>
-<pre><code class="bash">[root@promote hadoop]#cp yarn-env.sh  yarn-env.shark
-[root@promote hadoop]#vi yarn-env.sh  --yarn环境参数</code></pre>
+<pre><code class="bash">[root@xmy62-1 conf]# cd /hadoop/
+[root@xmy62-1 hadoop]# ls
+[root@xmy62-1 hadoop]# mkdir data name tmp journal
+[root@xmy62-1 hadoop]# cd /hadoop/hadoop-2.7.7/etc/hadoop/
+[root@xmy62-1 hadoop]# cp hadoop-env.sh hadoop-env.shark
+[root@xmy62-1 hadoop]# vi hadoop-env.sh</code></pre>
+<p>修改java路径如下</p>
+<pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201 </code></pre>
+<pre><code>[root@xmy62-1 hadoop]# vi yarn-env.sh</code></pre>
+<p>修改java路径如下</p>
 <pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201 </code></pre>
 <p>修改.xml文件</p>
 <p>修改此类文件，只需将变量添加到之间</p>
 <p>修改core-site.xml</p>
-<pre><code class="bash">[root@promote hadoop]#vi core-site.xml   --指定Hadoop的访问路径，即Hadoop的主节点服务器及端口号</code></pre>
+<pre><code class="bash">[root@xmy62-1 hadoop]# vi core-site.xml    --指定Hadoop的访问路径，即Hadoop的主节点服务器及端口号</code></pre>
 <pre><code class="bash">&lt;property&gt;
 &lt;name&gt;fs.defaultFS&lt;/name&gt;
 &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;   #Hadoop 的访问路径
 &lt;/property&gt;
 &lt;property&gt;
+&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;&lt;property&gt;
+&lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;value&gt;hdfs://hadoop-ha62&lt;/value&gt;      #hadoop-ha62--这里的名称是可以自定义的(着重强调:此后xml文件的相关名称都要这个名称)
+&lt;/property&gt;
+&lt;property&gt;
 &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/tmp&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;ha.zookeeper.quorum&lt;/name&gt;
+&lt;value&gt;xmy62-1:2181,xmy62-2:2181,xmy62-3:2181&lt;/value&gt;
+&lt;/property&gt;
 &lt;value&gt;/hadoop/tmp&lt;/value&gt;           #Hadoop 本地临时存放路径
 &lt;/property&gt;</code></pre>
 <p>修改hdfs-site.xml</p>
-<pre><code class="bash">[root@promote hadoop]#vi hdfs-site.xml</code></pre>
+<pre><code class="bash">[root@xmy62-1 hadoop]# vi hdfs-site.xml </code></pre>
 <pre><code class="bash">&lt;property&gt;
-&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;   #指定HDFS的主节点元数据文件的本地存放路径
+&lt;name&gt;dfs.nameservices&lt;/name&gt;
+&lt;value&gt;hadoop-ha62&lt;/value&gt;           #使用hadoop-ha62这个名称
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.ha.namenodes.hadoop-ha62&lt;/name&gt;
+&lt;value&gt;name-1,name-2&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.rpc-address.hadoop-ha62.name-1&lt;/name&gt;   #使用hadoop-ha62这个名称
+&lt;value&gt;xmy62-1:9000&lt;/value&gt;      #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.http-address.hadoop-ha62.name-1&lt;/name&gt;  #使用hadoop-ha62这个名称
+&lt;value&gt;xmy62-1:50070&lt;/value&gt;     #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.rpc-address.hadoop-ha62.name-2&lt;/name&gt;   #使用hadoop-ha62这个名称
+&lt;value&gt;xmy62-2:9000&lt;/value&gt;      #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.http-address.hadoop-ha62.name-2&lt;/name&gt;  #使用hadoop-ha62这个名称
+&lt;value&gt;xmy62-2:50070&lt;/value&gt;     #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.shared.edits.dir&lt;/name&gt;
+&lt;value&gt;qjournal://xmy62-2:8485;xmy62-3:8485/hadoop-ha62&lt;/value&gt;  #修改成另外两个结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.journalnode.edits.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/journal&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.ha.automatic-failover.enabled&lt;/name&gt;
+&lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.client.failover.proxy.provider.hadoop-ha62&lt;/name&gt;    #使用hadoop-ha62这个名称
+&lt;value&gt;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.ha.fencing.methods&lt;/name&gt;
+&lt;value&gt;
+sshfence
+shell(/bin/true)
+&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.ha.fencing.ssh.private-key-files&lt;/name&gt;
+&lt;value&gt;/root/.ssh/id_rsa&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.ha.fencing.ssh.connect-timeout&lt;/name&gt;
+&lt;value&gt;60000&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;
 &lt;value&gt;/hadoop/name&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  #指定HDFS的数据节点数据文件的本地存放路径
+&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;
 &lt;value&gt;/hadoop/data&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;dfs.replication&lt;/name&gt;     #指定HDFS的数据分块的备份数量
-&lt;value&gt;1&lt;/value&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;
+&lt;value&gt;3&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p>用mapred-site.xml.template生成.xml文件并进行修改</p>
-<pre><code class="bash">[root@promote hadoop]#cp mapred-site.xml.template mapred-site.xml
-[root@promote hadoop]#vi mapred-site.xml</code></pre>
+<pre><code class="bash">[root@xmy62-1 hadoop]# cp mapred-site.xml.template mapred-site.xml
+[root@xmy62-1 hadoop]# vi mapred-site.xml</code></pre>
 <pre><code class="bash">&lt;property&gt;
-&lt;name&gt;mapreduce.framework.name&lt;/name&gt;   #指定MapReduce所使用的外部管理框架，值为yarn
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;
 &lt;value&gt;yarn&lt;/value&gt;
 &lt;/property&gt;</code></pre>
 <p>修改 yarn-site.xml</p>
-<pre><code class="bash">[root@promote hadoop]#vi yarn-site.xml </code></pre>
+<pre><code class="bash">[root@xmy62-1 hadoop]# vi yarn-site.xml </code></pre>
 <pre><code class="bash">&lt;property&gt;
-&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    #指定NodeManager上运行的附属服务的类型
+&lt;name&gt;yarn.resourcemanager.ha.enabled&lt;/name&gt;
+&lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.resourcemanager.cluster-id&lt;/name&gt;
+&lt;value&gt;hadoop-ha62&lt;/value&gt;        #这里的名称可以自定义
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.resourcemanager.ha.rm-ids&lt;/name&gt;
+&lt;value&gt;resource-1,resource-2&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.resourcemanager.hostname.resource-1&lt;/name&gt;
+&lt;value&gt;xmy62-1&lt;/value&gt;   #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.resourcemanager.hostname.resource-2&lt;/name&gt;
+&lt;value&gt;xmy62-2&lt;/value&gt; #修改成结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.resourcemanager.zk-address&lt;/name&gt;
+&lt;value&gt;xmy62-1:2181,xmy62-2:2181,xmy62-3:2181&lt;/value&gt;  #修改成三个结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
 &lt;value&gt;mapreduce_shuffle&lt;/value&gt;
 &lt;/property&gt;</code></pre>
-<p>修改hbase /conf 目录下的 hbase-env.sh和 hbase-site.xml文件</p>
+<p>添加另外两台主机，使得结点1可以与另外连个结点通信</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# vi slaves</code></pre>
+<pre><code class="bash">xmy62-2
+xmy62-3</code></pre>
+<h3 id="六-Hbase配置"><a href="#六-Hbase配置" class="headerlink" title="六.Hbase配置"></a>六.Hbase配置</h3><p>修改hbase /conf 目录下的 hbase-env.sh和 hbase-site.xml文件</p>
 <p>修改hbase-env.sh，将下面对应修改的地方添加进去</p>
-<pre><code class="bash">[root@promote hadoop]#cd /hbase/hbase-1.2.10/conf/
-[root@promote conf]#cp hbase-env.sh hbase-env.sh.bak
-[root@promote conf]#vi hbase-env.sh</code></pre>
+<pre><code class="bash">[root@xmy62-1 hadoop]# cd /hbase/
+[root@xmy62-1 hbase]# ls
+[root@xmy62-1 hbase]# mkdir data logs
+[root@xmy62-1 hbase]# cd /hbase/hbase-1.2.10/
+[root@xmy62-1 hbase-1.2.10]# ll
+[root@xmy62-1 hbase-1.2.10]# cd /hbase/hbase-1.2.10/conf/
+[root@xmy62-1 conf]# cp hbase-env.sh hbase-env.shark
+[root@xmy62-1 conf]# vi hbase-env.sh</code></pre>
 <p>添加如下变量</p>
 <pre><code class="bash">export JAVA_HOME=/java/jdk1.8.0_201/
 export HBASE_CLASSPATH=/hadoop/hadoop-2.7.7/etc/hadoop
 export HBASE_LOG_DIR=/hbase/logs
 export HBASE_MANAGES_ZK=false</code></pre>
 <p>修改hbase-site.xml文件</p>
-<pre><code class="bash">[root@promote conf]#vi hbase-site.xml</code></pre>
+<pre><code class="bash">[root@xmy62-1 conf]# vi hbase-site.xml </code></pre>
 <pre><code class="bash">&lt;property&gt;
-&lt;name&gt;hbase.rootdir&lt;/name&gt;    #指定HBase数据库的存放路径
-&lt;value&gt;hdfs://localhost:9000/user/root/hbase&lt;/value&gt;    #注：/user/root可根据自己路径进性修改
-&lt;/property&gt;                                                 
+&lt;name&gt;hbase.rootdir&lt;/name&gt;
+&lt;value&gt;hdfs://hadoop-ha62/user/root/hbase&lt;/value&gt;
+&lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;hbase.tmp.dir&lt;/name&gt;  #指定HBase的元数据的本地存放路径
+&lt;name&gt;hbase.tmp.dir&lt;/name&gt;
 &lt;value&gt;/hbase/tmp&lt;/value&gt;
 &lt;/property&gt;
 &lt;property&gt;
-&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  #指定HBase的分布式集群模式为开启状态
+&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;
 &lt;value&gt;true&lt;/value&gt;
 &lt;/property&gt;
-&lt;property&gt; 
-&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;    #指定Zookeeper的连接地址，多个用“,”分隔
-&lt;value&gt;localhost:2181,localhost:2182,localhost:2183&lt;/value&gt;
+&lt;property&gt;
+&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;
+&lt;value&gt;xmy62-1:2181,xmy62-2:2181,xmy62-3:2181&lt;/value&gt;  #修改成三个结点的主机号
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hbase.master.maxclockskew&lt;/name&gt;
+&lt;value&gt;60000&lt;/value&gt;
 &lt;/property&gt;</code></pre>
-<p>关闭防火墙</p>
-<pre><code class="bash">[root@promote conf]#systemctl stop firewalld
-[root@promote conf]#systemctl disable firewalld</code></pre>
-<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20203845.png"></p>
-<h3 id="四-克隆"><a href="#四-克隆" class="headerlink" title="四.克隆"></a>四.克隆</h3><p>在Vmware workstation中克隆两台主机，共创建三台主机</p>
+<pre><code class="bash">[root@xmy62-1 conf]# vi backup-masters</code></pre>
+<pre><code class="bash">xmy62-1
+xmy62-2</code></pre>
+<pre><code class="bash">[root@xmy62-1 conf]# vi regionservers </code></pre>
+<pre><code class="bash">xmy62-2
+xmy62-3</code></pre>
+<h3 id="七-关机克隆虚拟机，开机后更改主机名并重新登录"><a href="#七-关机克隆虚拟机，开机后更改主机名并重新登录" class="headerlink" title="七.关机克隆虚拟机，开机后更改主机名并重新登录"></a>七.关机克隆虚拟机，开机后更改主机名并重新登录</h3><p>1.在Vmware workstation中克隆两台主机，共创建三台主机</p>
 <p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20204009.png"></p>
 <p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20204201.png"></p>
-<h3 id="五-修改主机名和网络配置"><a href="#五-修改主机名和网络配置" class="headerlink" title="五.修改主机名和网络配置"></a>五.修改主机名和网络配置</h3><p>采用远程登录的方式操作主机</p>
-<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20214708.png"></p>
-<p>修改网络配置</p>
-<p>三台虚拟机同时进行如下操作</p>
+<p>2.修改主机2和3的主机名</p>
+<pre><code class="bash">root@xmy62-1 hadoop]# hostnamectl set-hostname xmy62-2
+root@xmy62-1 hadoop]# hostnamectl set-hostname xmy62-3
+root@xmy62-1 hadoop]#exit
+root@xmy62-1 hadoop]#su root</code></pre>
+<p>3.三台虚拟机同时进行如下操作</p>
 <p>将  BOOTPROTO=”dhcp” 注释掉，然后添加网络，网络的主机号一般在200以上</p>
-<pre><code class="bash">[root@promote conf]#cd /etc/sysconfig/network-scripts/</code></pre>
+<pre><code class="bash">[root@xmy62-1 conf]#cd /etc/sysconfig/network-scripts/
+[root@xmy62-2 conf]#cd /etc/sysconfig/network-scripts/
+[root@xmy62-3 conf]#cd /etc/sysconfig/network-scripts/</code></pre>
 <p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20234845.png"></p>
-<p>重启网络</p>
-<pre><code class="bash">[root@promote conf]#systemctl restart network</code></pre>
-<p>修改hostname</p>
-<pre><code class="bash">[root@promote conf]#vi /etc/hostname或 hostnamectl set-hostname xxx
-#xxx 为为主机名称</code></pre>
-<p>分别在三台虚拟机中进入hosts，添加ip地址和主机名</p>
+<p>4.重启网络</p>
+<pre><code class="bash">[root@xmy62-1 conf]#systemctl restart network
+[root@xmy62-2 conf]#systemctl restart network
+[root@xmy62-3 conf]#systemctl restart network</code></pre>
+<p>5.分别在三台虚拟机中进入hosts，添加ip地址和主机名</p>
 <pre><code class="bash">[root@promote conf]#vi /etc/hosts</code></pre>
-<pre><code>192.168.1.201  cluster1-1  
-192.168.1.202  cluster1-2  
-192.168.1.203  cluster1-3  </code></pre>
+<pre><code>192.168.1.201  xmy62-1
+192.168.1.202  xmy62-2  
+192.168.1.203  xmy62-2</code></pre>
 <p>测试</p>
 <p>在Vmware workstation中互ping主机名</p>
 <p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-11-18%20235914.png"></p>
-</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/">https://www.sourcex99.top/2020/11/18/HDFS高可用群集搭建/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/HDFS-%E9%9B%86%E7%BE%A4-Centos%EF%BC%88%E6%9C%80%E5%B0%8F%E5%8C%96%E5%AE%89%E8%A3%85%EF%BC%89/">HDFS 集群 Centos（最小化安装）</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">一.添加环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">二.解压文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">三.修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E5%85%8B%E9%9A%86"><span class="toc-number">4.</span> <span class="toc-text">四.克隆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94-%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%92%8C%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">五.修改主机名和网络配置</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/11/29/SpringBoot-mybatis%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">&lt; SpringBoot+Mybatis框架搭建</a><a class="next" href="/2020/10/28/CenstOS%E7%B3%BB%E7%BB%9FMySQL%E9%85%8D%E7%BD%AE/">Censtos系统MySQL配置 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
+<p>6.配置免密登录（第一台主机进行操作）</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# ssh-keygen -t rsa  #‘-t’这边有空格，一直按回车发送公钥，建议1,2,3都发
+[root@xmy62-1 hadoop]# ssh-copy-id -i /root/.ssh/id_rsa.pub root@xmy62-1
+[root@xmy62-1 hadoop]# ssh-copy-id -i /root/.ssh/id_rsa.pub root@xmy62-2
+[root@xmy62-1 hadoop]# ssh-copy-id -i /root/.ssh/id_rsa.pub root@xmy62-3</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20133750.png"></p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20133809.png"></p>
+<p>7.查看</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# ssh xmy62-2
+[root@xmy62-1 hadoop]# ssh xmy62-3</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20133828.png"></p>
+<p>8.三台同步时间</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# hwclock -w
+[root@xmy62-2 hadoop]# hwclock -w
+[root@xmy62-3 hadoop]# hwclock -w</code></pre>
+<h3 id="八-启动zookeeper"><a href="#八-启动zookeeper" class="headerlink" title="八.启动zookeeper"></a>八.启动zookeeper</h3><p>1.修改myid</p>
+<pre><code class="bash">[root@xmy62-2 zookeeper]# rm -rf /zookeeper/data/myid 
+[root@xmy62-2 zookeeper]# echo &#39;2&#39; &gt;  /zookeeper/data/myid
+[root@xmy62-2 zookeeper]# cat /zookeeper/data/myid
+[root@xmy62-3 zookeeper]# rm -rf /zookeeper/data/myid
+[root@xmy62-3 zookeeper]# echo &#39;3&#39; &gt; /zookeeper/data/myid
+[root@xmy62-3 zookeeper]# cat /zookeeper/data/myid</code></pre>
+<p>2.启动zookeeper</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# zkServer.sh start
+[root@xmy62-2 hadoop]# zkServer.sh start
+[root@xmy62-3 hadoop]# zkServer.sh start
+[root@xmy62-1 hadoop]#zkServer.sh status
+[root@xmy62-2 hadoop]#zkServer.sh status
+[root@xmy62-3 hadoop]#zkServer.sh status</code></pre>
+<p>出现两个follower，一个leader时即为配置成功</p>
+<h3 id="九-启动hadoop"><a href="#九-启动hadoop" class="headerlink" title="九.启动hadoop"></a>九.启动hadoop</h3><p>1.三台启动jouanalnode</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# hadoop-daemon.sh start journalnode
+[root@xmy62-2 hadoop]# hadoop-daemon.sh start journalnode
+[root@xmy62-3 hadoop]# hadoop-daemon.sh start journalnode</code></pre>
+<p>2.在第一台输入格式化命令</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# hadoop namenode -format #&#39;-format&#39;这边有空格</code></pre>
+<p>Status应该为0</p>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20135221.png"></p>
+<p>3.复制文件name</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# scp -r /hadoop/name/ root@xmy62-2:/hadoop/
+[root@xmy62-1 hadoop]# scp -r /hadoop/name/ root@xmy62-3:/hadoop/</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20135343.png"></p>
+<p>4.在第一台格式化zk</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]#hdfs zkfc -formatZK</code></pre>
+<p><img src="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-01-05%20135515.png"></p>
+<p>5.关闭1、2、3journalnode</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# hadoop-daemon.sh stop journalnode
+[root@xmy62-2 hadoop]# hadoop-daemon.sh stop journalnode
+[root@xmy62-3 hadoop]# hadoop-daemon.sh stop journalnode</code></pre>
+<p>6.在第一台上启动hadoop</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# start-all.sh</code></pre>
+<p>7.在2和3上yarn-daemon.sh start resourcemanager</p>
+<pre><code class="bash">[root@xmy62-2 hadoop]# yarn-daemon.sh start resourcemanager
+[root@xmy62-3 hadoop]# yarn-daemon.sh start resourcemanager</code></pre>
+<p>8.在三个结点上分别jps查看，jps查看的内容必须与下面出现的信息一致，否则配置就是不成功的</p>
+<pre><code class="bash">[root@xmy62-3 hadoop]# jps</code></pre>
+<pre><code class="bash">9218 DFSZKFailoverController
+9587 Jps
+7176 QuorumPeerMain
+8922 NameNode</code></pre>
+<pre><code class="bash">[root@cluster1-2 name]# jps</code></pre>
+<pre><code class="bash">8226 DFSZKFailoverController
+8020 DataNode
+8308 NodeManager
+8470 ResourceManager
+8523 Jps
+7949 NameNode
+8111 JournalNode</code></pre>
+<pre><code class="bash">[root@cluster1-3 ~]# jps</code></pre>
+<pre><code class="bash">7776 JournalNode
+7872 NodeManager
+7105 QuorumPeerMain
+7685 DataNode
+7997 Jps</code></pre>
+<h3 id="十-启动hbase"><a href="#十-启动hbase" class="headerlink" title="十.启动hbase"></a>十.启动hbase</h3><p>1.启动hbase</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# start-hbase.sh</code></pre>
+<p>在三个结点上分别jps查看，jps查看的内容必须与下面出现的信息一致，否则配置就是不成功的</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]# jps</code></pre>
+<pre><code class="bash">3024 ResourceManager
+2242 DFSZKFailoverController
+3683 Jps
+3204 HMaster
+1957 NameNode
+1591 QuorumPeerMain</code></pre>
+<pre><code class="bash">[root@xmy62-2 zookeeper]# jps</code></pre>
+<pre><code class="bash">1553 QuorumPeerMain
+2498 ResourceManager
+2054 NodeManager
+2790 HRegionServer
+2855 HMaster
+1787 DataNode
+1726 NameNode
+1982 DFSZKFailoverController
+1871 JournalNode
+3183 Jps</code></pre>
+<pre><code class="bash">[root@xmy62-3 zookeeper]# jps</code></pre>
+<pre><code class="bash">2288 Jps
+1684 DataNode
+1768 JournalNode
+2072 HRegionServer
+1853 NodeManager
+1518 QuorumPeerMain</code></pre>
+<p>进入hbase</p>
+<pre><code class="bash">[root@xmy62-1 hadoop]#hbase shell</code></pre>
+</div><div class="p-copyright"><blockquote><div class="p-copyright-author"><span class="p-copyright-key">本文作者：</span><span class="p-copytight-value"><a href="mailto:litreily@163.com">SourceX99</a></span></div><div class="p-copyright-link"><span class="p-copyright-key">本文链接：</span><span class="p-copytight-value"><a href="/2020/11/18/HDFS%E9%AB%98%E5%8F%AF%E7%94%A8%E7%BE%A4%E9%9B%86%E6%90%AD%E5%BB%BA/">https://www.sourcex99.top/2020/11/18/HDFS高可用群集搭建/</a></span></div><div class="p-copyright-note"><span class="p-copyright-key">版权声明：</span><span class="p-copytight-value">本博客所有文章除特殊声明外，均采用<a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/"> CC BY-NC 4.0 </a>许可协议。转载请注明出处 <a href="https://www.sourcex99.top">SourceX99的博客</a>！</span></div></blockquote></div></article><div class="p-info box"><span class="p-tags"><i class="fa fa-tag"></i><a href="/tags/HDFS-%E9%9B%86%E7%BE%A4-Centos%EF%BC%88%E6%9C%80%E5%B0%8F%E5%8C%96%E5%AE%89%E8%A3%85%EF%BC%89/">HDFS 集群 Centos（最小化安装）</a></span></div><aside id="toc"><div class="toc-title">目录</div><nav><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.</span> <span class="toc-text">一.添加环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%8C%E6%9B%B4%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-number">2.</span> <span class="toc-text">三.关闭防火墙，更改主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E9%85%8D%E7%BD%AEzookeeper"><span class="toc-number">3.</span> <span class="toc-text">四.配置zookeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94-Hadoop%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">五.Hadoop配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD-Hbase%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">六.Hbase配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83-%E5%85%B3%E6%9C%BA%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8C%E5%BC%80%E6%9C%BA%E5%90%8E%E6%9B%B4%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%B9%B6%E9%87%8D%E6%96%B0%E7%99%BB%E5%BD%95"><span class="toc-number">6.</span> <span class="toc-text">七.关机克隆虚拟机，开机后更改主机名并重新登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB-%E5%90%AF%E5%8A%A8zookeeper"><span class="toc-number">7.</span> <span class="toc-text">八.启动zookeeper</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D-%E5%90%AF%E5%8A%A8hadoop"><span class="toc-number">8.</span> <span class="toc-text">九.启动hadoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81-%E5%90%AF%E5%8A%A8hbase"><span class="toc-number">9.</span> <span class="toc-text">十.启动hbase</span></a></li></ol></nav></aside></div><section class="p-ext"><div class="l-pager l-pager-dtl box"><a class="prev" href="/2020/11/29/SpringBoot-mybatis%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">&lt; SpringBoot+Mybatis框架搭建</a><a class="next" href="/2020/10/28/CenstOS%E7%B3%BB%E7%BB%9FMySQL%E9%85%8D%E7%BD%AE/">Censtos系统MySQL配置 &gt;</a></div><div id="valine-comment"><style type="text/css">.night .v[data-class=v] a { color: #0F9FB4 !important; }
 .night .v[data-class=v] a:hover { color: #216C73 !important; }
 .night .v[data-class=v] li { list-style: inherit; }
 .night .v[data-class=v] .vwrap { border: 1px solid #223441; border-radius: 0; }
@@ -200,7 +459,7 @@ window.valine = new Valine({
   avatar:'identicon',
   guest_info:guest_info,
   pageSize:'10'
-})</script></div></section><footer><p>Copyright © 2016 - 2020 <a href="/." rel="nofollow">SourceX99</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
+})</script></div></section><footer><p>Copyright © 2016 - 2021 <a href="/." rel="nofollow">SourceX99</a> | <strong><a rel="nofollow" target="_blank" href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a></strong><br><span id="busuanzi_container_site_uv"><i class="fa fa-user"></i><span id="busuanzi_value_site_uv"></span></span> <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i><span id="busuanzi_value_site_pv"></span></span> | Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a>Theme with<a rel="nofollow" target="_blank" href="https://github.com/litreily/snark-hexo"> snark.</a></p></footer></div></div></div><script type="text/javascript" src="/plugins/prettify/prettify.js"></script><script type="text/javascript" src="/js/search.js"></script><script type="text/javascript" src="/js/top.js"></script><script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var search_path = 'search.xml';
 if (search_path.length == 0) {
     search_path = 'search.xml';
 }
