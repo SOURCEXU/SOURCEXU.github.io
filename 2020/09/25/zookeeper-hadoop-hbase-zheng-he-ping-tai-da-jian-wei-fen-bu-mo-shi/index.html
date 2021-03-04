@@ -1,0 +1,1443 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式）, 星空下的罗纳河">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式） | 星空下的罗纳河</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="星空下的罗纳河" type="application/atom+xml">
+</head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">星空下的罗纳河</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">星空下的罗纳河</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Zookeeper+Hadoop+Hbase整合平台搭建（伪分布模式）</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Zookeeper-Hadoop-Hbase/">
+                                <span class="chip bg-color">Zookeeper Hadoop Hbase</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-09-25
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.9k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>JDK的卸载与安装</p>
+<p>Zookeeper的安装</p>
+<p>Hadoop的安装</p>
+<p>Hbase的安装</p>
+</blockquote>
+<h3 id="伪分布式平台架构"><a href="#伪分布式平台架构" class="headerlink" title="伪分布式平台架构"></a>伪分布式平台架构</h3><p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/IMG_20200925_163341.jpg"></p>
+<p>首先我们需要下载搭建平台所需要的资源包并放入指定文件目录下，这里博主将包放入了根目录下的software文件中。</p>
+<p>资源获取地址：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ">https://pan.baidu.com/s/1EW8t5szEkG-1Uk6iqeRQbQ</a>    提取码：2a3c</p>
+<p>通过xftp 6 将资源包传输到  /software  目录下</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20152213.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20152233.png"></p>
+<p>我们可以在CentOS系统里查看传输好的文件</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20180819.png"></p>
+<h3 id="一-JDK的卸载与安装"><a href="#一-JDK的卸载与安装" class="headerlink" title="一.JDK的卸载与安装"></a>一.JDK的卸载与安装</h3><p>从普通用户进入root 用户，在root用户卸载java（为了方便起见，博主将用户名设为hadoop,请不要与下面的hadoop用户混淆)</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote~<span class="token punctuation">]</span><span class="token variable">$su</span> - root<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20165058.png"></p>
+<ul>
+<li>卸载jdk</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#rpm -qa|grep jdk      查看jdk包</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#rpm -qa|grep java     查看java包</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#rpm -e java-XXXX      用rpm命令删除包</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#yum remove java-XXXX  用yum命令删包，有些包会报“依赖项错误”，这时用yum就可以解决问题</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>首先查看系统中的jdk包,发现有4个压缩包，我们要做的就是将它们删除</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#rpm -qa|grep jdk</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155453.png"></p>
+<p>删除jdk包，rpm  -e + 包名，最好是一个一个删除，不要用  rpm -e *  或   yum remove *   一次性将包删除，一次性删除可能会导致后面坏境的搭建出错</p>
+<p>用   rpm -e + 包名，发现报错，此时用yum remove + 包名（推荐）</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#yum remove java-XXXX</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155642.png"> </p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20155806.png"></p>
+<p>​         删除完后，用   rpm -qa|grep jdk 会发现输出为空，说明jdk压缩包已删除</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20160025.png"></p>
+<p>​          重复上述步骤删除java包</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20160053.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20160232.png"></p>
+<ul>
+<li>安装jdk</li>
+</ul>
+<p>卸载完jdk和java后，我们在root用户下新建java目录,并进入java目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#mkdir /java</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#cd /java</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>我们可以查看传到/software目录下压缩包</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20161935.png"></p>
+<p>接下来就是解压software目录下的  jdk-8u201-linux-x64.tar.gz</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote java<span class="token punctuation">]</span><span class="token comment">#tar -zxf /software/jdk-8u201-linux-x64.tar.gz</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20162002.png"></p>
+<ul>
+<li>修改java坏境变量</li>
+</ul>
+<p>进入hadoop用户，如果诸位系统中没有hadoop用户，可以新建一个hadoop用户,用 useradd hadoop,这样的好处就是当我们需要进行hadoop相关操作时就可以进入该用户，不需要再找了，同时也避免将其框架弄坏。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote java<span class="token punctuation">]</span><span class="token comment">#su - hadoop</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开  .bash_profile 配置文件，添加java环境变量</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">vi</span> .bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">#Java environment
+JAVA_HOME=/java/jdk1.8.0_201
+PATH=$JAVA_HOME/bin:$PATH
+export JAVA_HOME CLASSPATH PATH<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20161157.png"></p>
+<p>source 文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$source</span> .bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>输入java -version,如果出现图片中的信息，说明配置成功。否则删除root下的java文件，重新进行配置</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-25%20162112.png"></p>
+<h3 id="二-Zookeeper的安装"><a href="#二-Zookeeper的安装" class="headerlink" title="二.Zookeeper的安装"></a>二.Zookeeper的安装</h3><ul>
+<li>zookeeper软件包解压</li>
+</ul>
+<p>从hadoop用户退出，进入root用户</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#su - root</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在根目录下创建zookeeper目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#mkdir /zookeeper</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#cd /</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>将zookeeper的权限变更给hadoop</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#chown hadoop /zookeeper</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>进入hadoop用户并切换到zookeeper目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#su - hadoop</span>
+<span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$cd</span> /zookeeper<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>在当前目录下解压缩zookeeper包</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$tar</span> -zxf /software/zookeeper-3.4.13.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>zookeeper坏境变量设定</li>
+</ul>
+<p>配置zookeeper的环境变量，将下面的变量添加进去</p>
+<p>“~”表示用户主目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$vi</span> ~/.bash_profile     进入.bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#zookeeper environment</span>
+<span class="token assign-left variable">ZOOKEEPER_HOME</span><span class="token operator">=</span>/zookeeper/zookeeper-3.4.13
+<span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token variable">$ZOOKEEPER_HOME</span>/bin:<span class="token environment constant">$PATH</span>
+<span class="token builtin class-name">export</span> ZOOKEEPER_HOME <span class="token environment constant">PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>source 文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$source</span> ~/.bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164219.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20161754.png"></p>
+<p>验证坏境变量是否配置成功</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token environment constant">$PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>zookeeper伪分布模式参数配置</li>
+</ul>
+<p>创建3个data和logs目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper1/data
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper2/data
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper3/data
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper1/logs
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper2/logs 
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$mkdir</span> -p zookeeper3/logs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164412.png"></p>
+<p>在3个data目录里创建myid文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token string">'1'</span> <span class="token operator">&gt;</span> zookeeper1/data/myid
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token string">'2'</span> <span class="token operator">&gt;</span> zookeeper2/data/myid
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token string">'3'</span> <span class="token operator">&gt;</span> zookeeper3/data/myid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164436.png"></p>
+<p>查看myid里的id是否一一对应</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$cat</span> zookeeper1/data/myid
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$cat</span> zookeeper2/data/myid
+<span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$cat</span> zookeeper3/data/myid<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20164536.png"></p>
+<p>进入zookeeper-3.4.13conf目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote zookeeper<span class="token punctuation">]</span><span class="token variable">$cd</span> /zookeeper/zookeeper-3.4.13/conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>用zoo_sample.cfg去生成zoo1.cfg的congfig文件，然后对zoo1.cfg文件进行修改与添加</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$cp</span> zoo_sample.cfg zoo1.cfg   复制
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$vi</span> zoo1.cfg    进入文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>将文件中的dataDir和clientPort两个参数注释掉，因为它们会影响后面的配置，同时将变量添加进去</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">dataDir</span><span class="token operator">=</span>/zookeeper/zookeeper1/data      <span class="token comment">#指定Zookeeper的data路径</span>
+<span class="token assign-left variable">dataLogDir</span><span class="token operator">=</span>/zookeeper/zookeeper1/logs   <span class="token comment">#指定Zookeeper的log路径</span>
+<span class="token assign-left variable">clientPort</span><span class="token operator">=</span><span class="token number">2181</span>   <span class="token comment">#指定Client连接端口，对外唯一</span>
+server.1<span class="token operator">=</span>localhost:2888:3888     <span class="token comment">#指定server node，及其服务端口。localhost可切换为主机名</span>
+server.2<span class="token operator">=</span>localhost:2889:3889
+server.3<span class="token operator">=</span>localhost:2890:3890<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173242.png"></p>
+<p>复制zoo1.cfg生成zoo2.cfg zoo3.cfg</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$cp</span> zoo1.cfg zoo2.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$cp</span> zoo1.cfg zoo3.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$vi</span> zoo2.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$vi</span> zoo3.cfg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意，要修改zoo2.cfg和zoo3.cfg的dataDir、dataLogDir和clientPort中的序号</strong></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183431.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20183453.png"></p>
+<p>启动服务</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh start zoo1.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh start zoo2.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh start zoo3.cfg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173515.png"></p>
+<p>查看工作进程</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$jps</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173654.png"></p>
+<p>查看工作状态</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh status zoo1.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh status zoo2.cfg
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$zkServer</span>.sh status zoo3.cfg<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20173718.png"></p>
+<p>出现上述的查询结果说明zookeeper已经配置完成</p>
+<h3 id="三-Hadoop的安装"><a href="#三-Hadoop的安装" class="headerlink" title="三.Hadoop的安装"></a>三.Hadoop的安装</h3><ul>
+<li>hadoop 软件包解压</li>
+</ul>
+<p>切换到root的主目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$su</span> - root<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在根目录下创建hadoop目录，并将hadoop目录的权限给hadoop用户，然后切换到hadoop用户，进入hadoop目录，同时在当前目录下解压hadoop包</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#mkdir /hadoop</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#cd /</span>
+<span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#chown hadoop /hadoop</span>
+<span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#su - hadoop</span>
+<span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$cd</span> /hadoop
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$tar</span> -zxf /software/hadoop-2.7.7.tar.gz <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>hadoop坏境变量设定</li>
+</ul>
+<p>添加hadoop环境变量</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> ~/.bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#hadoop environment</span>
+<span class="token assign-left variable">HADOOP_HOME</span><span class="token operator">=</span>/hadoop/hadoop-2.7.7
+<span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token variable">$HADOOP_HOME</span>/bin:<span class="token variable">$HADOOP_HOME</span>/sbin:<span class="token environment constant">$PATH</span>
+<span class="token builtin class-name">export</span> HADOOP_HOME <span class="token environment constant">PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$source</span> ~/.bash_profile<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174047.png"></p>
+<p>验证配置是否成功</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token environment constant">$PATH</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174131.png"></p>
+<ul>
+<li>hadoop参数配置</li>
+</ul>
+<p>创建 tmp data name 三个文件目录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$mkdir</span> tmp data name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>配置本机免密码登录</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$cd</span> ~
+<span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$ssh</span>-keygen -t rsa   输入三个enter<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20174238.png"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$cd</span>  .ssh 
+<span class="token punctuation">[</span>hadoop@promote .ssh<span class="token punctuation">]</span><span class="token variable">$cp</span> id_rsa.pub authorized_keys
+<span class="token punctuation">[</span>hadoop@promote .ssh<span class="token punctuation">]</span>ls
+<span class="token punctuation">[</span>hadoop@promote .ssh<span class="token punctuation">]</span>ssh localhost    输入yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-27%20175032.png"></p>
+<p>这时无需密码就可登录localhost</p>
+<ul>
+<li>修改 hadoop-env.sh、core-site.xml、hdfs-site.xml、mapred-site.xml、yarn-env.sh、yarn-site.xml文件</li>
+</ul>
+<p>进入/etc下的hadoop</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote .ssh<span class="token punctuation">]</span>cd ~
+<span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$cd</span> /hadoop/hadoop-2.7.7/etc/hadoop<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>修改hadoop-env.sh和yarn-env.sh</p>
+<p>因为这两个文件是环境变量文件，所以修改前建议先复制</p>
+<p>修改文件的JAVA_HOME</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$cp</span> hadoop-env.sh hadoop-env.shark
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> hadoop-env.sh    --系统运行环境参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/java/jdk1.8.0_201<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171532.png"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$cp</span> yarn-env.sh  yarn-env.shark
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> yarn-env.sh  --yarn环境参数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/java/jdk1.8.0_201   这里需去掉注释“<span class="token comment">#”</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20171751.png"></p>
+<p>修改.xml文件</p>
+<p>修改此类文件，只需将变量添加到<configuration><configuration>之间</configuration></configuration></p>
+<p>修改core-site.xml</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> core-site.xml   --指定Hadoop的访问路径，即Hadoop的主节点服务器及端口号<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">&lt;property&gt;
+&lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;value&gt;hdfs://localhost:9000&lt;/value&gt;   #Hadoop 的访问路径
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hadoop.tmp.dir&lt;/name&gt;
+&lt;value&gt;/hadoop/tmp&lt;/value&gt;           #Hadoop 本地临时存放路径
+&lt;/property&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改hdfs-site.xml</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> hdfs-site.xml    --指定HDFS主要配置参数<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">&lt;property&gt;
+&lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;   #指定HDFS的主节点元数据文件的本地存放路径
+&lt;value&gt;/hadoop/name&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;  #指定HDFS的数据节点数据文件的本地存放路径
+&lt;value&gt;/hadoop/data&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;     #指定HDFS的数据分块的备份数量
+&lt;value&gt;1&lt;/value&gt;
+&lt;/property&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>用mapred-site.xml.template生成.xml文件并进行修改</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$cp</span> mapred-site.xml.template mapred-site.xml
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> mapred-site.xml  --指定MapReduce服务的配置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">&lt;property&gt;
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;   #指定MapReduce所使用的外部管理框架，值为yarn
+&lt;value&gt;yarn&lt;/value&gt;
+&lt;/property&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改 yarn-site.xml</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$vi</span> yarn-site.xml    --yarn服务的配置<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;    #指定NodeManager上运行的附属服务的类型
+&lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20172226.png"></p>
+<ul>
+<li>Hadoop格式化，启动和验证</li>
+</ul>
+<p>格式化</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$hadoop</span> namenode -format<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里要找到status,如果status=0，则说明前面的配置成功，如果status非零，则前面存在错误。博主格式化时出现status=1的情况。遇到错误不要害怕，我们要学会查看信息。博主通过查看上面的错误日志，发现hdfs文件中<value>缺少“/”，于是将其补上就可以了</value></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20173503.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174131.png"></p>
+<p>启动</p>
+<p>启动dfs和yarn</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$start</span>-dfs.sh
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$start</span>-yarn.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>jps查看工作进程，如果出现以下6个进程则说明配置对了，如果少一个或多个，则前面的配置出错。如果缺少namenode、datanode，应该是hdfs文件错误，如果缺少ResourceManager应该是yarn.site.xml文件错误。修改前需将dfs和yarn停掉,运行时再启动。如果前面的6个配置文件都没有错误，然后启动dfs和yarn,查看jps依然没有变化，可以将 /hadoop目录下的data、name文件删除，重新格式化</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span><span class="token variable">$jps</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20183129.png"></p>
+<p>验证</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span>$ hadoop fs -mkdir /test
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span>$ hadoop fs -ls /
+<span class="token punctuation">[</span>hadoop@promote hadoop<span class="token punctuation">]</span>$ <span class="token builtin class-name">cd</span> /hadoop/hadoop-2.7.7/share/hadoop/mapreduce
+<span class="token punctuation">[</span>hadoop@promote mapreduce<span class="token punctuation">]</span><span class="token variable">$ls</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20175754.png"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote mapreduce<span class="token punctuation">]</span>$ hadoop jar hadoop-mapreduce-examples-2.7.7.jar pi <span class="token number">2</span> <span class="token number">1000</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174721.png"></p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-09-30%20174751.png"></p>
+<p>到这里，hadoop就安装完成了。</p>
+<h3 id="四-Hbase的安装"><a href="#四-Hbase的安装" class="headerlink" title="四.Hbase的安装"></a>四.Hbase的安装</h3><p>hbase的安装是基于zookeeper和hadoop的安装，所以在安装前确保zookeeper和hadoop都可以正常启动，切记，zookeeper和hadoop的启动不可以在root用户下启动，否则hbase安装失败</p>
+<p>进入root 用户创建hbase目录，并将权限赋给hadoop</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$su</span> - root
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#mkdir /hbase</span>
+<span class="token punctuation">[</span>root@promote ~<span class="token punctuation">]</span><span class="token comment">#cd /</span>
+<span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#chown hadoop /hbase</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>进入hadoop用户，在hbase目录下解压缩资源包</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>root@promote /<span class="token punctuation">]</span><span class="token comment">#su - hadoop</span>
+<span class="token punctuation">[</span>hadoop@promote ~<span class="token punctuation">]</span><span class="token variable">$cd</span> /hbase
+<span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$ls</span>
+<span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$tar</span> -zxf /software/hbase-1.2.10-bin.tar.gz <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>创建tmp和logs</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$mkdir</span> tmp logs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加hbase环境变量</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$vi</span> ~/.bash_profile <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">#hbase environment
+HBASE_HOME=/hbase/hbase-1.2.10
+PATH=$HBASE_HOME/bin:$PATH
+export HBASE_HOME<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>source 文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$source</span> ~/.bash_profile 
+<span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$echo</span> <span class="token environment constant">$PATH</span>   查看hbase环境变量是否添加成功<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>修改hbase /conf 目录下的 hbase-env.sh和 hbase-site.xml文件</p>
+<p>修改hbase-env.sh，将下面对应修改的地方添加进去</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote hbase<span class="token punctuation">]</span><span class="token variable">$cd</span> /hbase/hbase-1.2.10/conf/
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$cp</span> hbase-env.sh hbase-env.sh.bak
+<span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$vi</span> hbase-env.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki"># export JAVA_HOME=/usr/java/jdk1.6.0/
+export JAVA_HOME=/java/jdk1.8.0_201/
+# export HBASE_CLASSPATH=
+export HBASE_CLASSPATH=/hadoop/hadoop-2.7.7/etc/hadoop
+# export HBASE_LOG_DIR=${HBASE_HOME}/logs
+export HBASE_LOG_DIR=/hbase/logs
+# Tell HBase whether it should manage it's own instance of Zookeeper or not.
+export HBASE_MANAGES_ZK=false<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改hbase-site.xml文件</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$vi</span> hbase-site.xml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">&lt;property&gt;
+&lt;name&gt;hbase.rootdir&lt;/name&gt;    #指定HBase数据库的存放路径
+&lt;value&gt;hdfs://localhost:9000/user/root/hbase&lt;/value&gt;    #注：/user/root可根据自己路径进性修改
+&lt;/property&gt;                                                 
+&lt;property&gt;
+&lt;name&gt;hbase.tmp.dir&lt;/name&gt;  #指定HBase的元数据的本地存放路径
+&lt;value&gt;/hbase/tmp&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hbase.cluster.distributed&lt;/name&gt;  #指定HBase的分布式集群模式为开启状态
+&lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt; 
+&lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;    #指定Zookeeper的连接地址，多个用“,”分隔
+&lt;value&gt;localhost:2181,localhost:2182,localhost:2183&lt;/value&gt;
+&lt;/property&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>启动habase</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$start</span>-hbase.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看进程</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span><span class="token variable">$jps</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果出现如下进程，则hbase安装正确</p>
+<pre class="line-numbers language-tiki" data-language="tiki"><div class="caption"><span>wiki</span></div><code class="language-tiki">9488 NameNode
+19313 QuorumPeerMain
+21763 Jps
+21477 HRegionServer
+18934 QuorumPeerMain
+19800 SecondaryNameNode
+19625 DataNode
+18987 QuorumPeerMain
+20107 NodeManager
+21388 HMaster
+19998 ResourceManager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>测试</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>hadoop@promote conf<span class="token punctuation">]</span>$ hbase shell
+hbase<span class="token punctuation">(</span>main<span class="token punctuation">)</span>:001:<span class="token operator"><span class="token file-descriptor important">0</span>&gt;</span> create <span class="token string">'table（表名）'</span>,<span class="token string">'id'</span>,<span class="token string">'name'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-15%20092209.png"></p>
+<p>到这里伪分布式平台搭建完毕！</p>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><h5 id="登录hadoop网页"><a href="#登录hadoop网页" class="headerlink" title="登录hadoop网页"></a>登录hadoop网页</h5><p>在终端中输入ifconfig,查看系统的ip地址</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-28%20163457.png"></p>
+<p>打开火狐浏览器，输入ip地址，端口号为50070</p>
+<p><img src="/2020/09/25/zookeeper-hadoop-hbase-zheng-he-ping-tai-da-jian-wei-fen-bu-mo-shi/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-28%20163346.png"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Zookeeper-Hadoop-Hbase/">
+                                    <span class="chip bg-color">Zookeeper Hadoop Hbase</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '',
+        clientSecret: '',
+        repo: '',
+        owner: '',
+        admin: null,
+        id: '2020-09-25T14-42-46',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/09/30/shu-ju-tong-xin-shi-yan-bi-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="数据通信">
+                        
+                        <span class="card-title">数据通信</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-30
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            星空下的罗纳河
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%BB%84%E7%BD%91-%E5%AE%9E%E9%AA%8C-%E7%AC%94%E8%AE%B0-Cisco-Packet-Tracer/">
+                        <span class="chip bg-color">组网 实验 笔记 Cisco Packet Tracer</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/09/24/hexo-bo-ke-wu-fa-cha-ru-tu-pian-wen-ti-de-jie-jue/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Hexo博客无法插入图片问题的解决">
+                        
+                        <span class="card-title">Hexo博客无法插入图片问题的解决</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            星空下的罗纳河
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/hexo-%E5%9B%BE%E7%89%87%E6%8F%92%E5%85%A5/">
+                        <span class="chip bg-color">hexo 图片插入</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="5309167281"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">星空下的罗纳河</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">28.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/SOURCEXU" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:xplcmy@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=2982457434" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 2982457434" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+    
+    <script type="text/javascript" size="150" alpha='0.6'
+        zIndex="-1" src="/libs/background/ribbon-refresh.min.js" async="async"></script>
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
