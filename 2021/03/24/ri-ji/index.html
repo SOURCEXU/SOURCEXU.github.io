@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Sql Server 基础入门(三), 星空下的罗纳河">
+    <meta name="keywords" content="日记, 星空下的罗纳河">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Sql Server 基础入门(三) | 星空下的罗纳河</title>
+    <title>日记 | 星空下的罗纳河</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/24.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Sql Server 基础入门(三)</h1>
+                    <h1 class="description center-align post-title">日记</h1>
                 </div>
             </div>
         </div>
@@ -371,8 +371,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Sql/">
-                                <span class="chip bg-color">Sql</span>
+                            <a href="/tags/%E6%97%A5%E5%B8%B8-%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
+                                <span class="chip bg-color">日常 碎碎念</span>
                             </a>
                         
                     </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-10-19
+                    2021-03-24
                 </div>
                 
 
@@ -396,7 +396,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    728
+                    235
                 </div>
                 
 
@@ -421,68 +421,14 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>数据的插入</p>
-<p>数据的更新</p>
-<p>数据的删除</p>
-<p>数据的检索</p>
-</blockquote>
-<h3 id="一-数据的插入"><a href="#一-数据的插入" class="headerlink" title="一.数据的插入"></a>一.数据的插入</h3><p><img src="/2020/10/19/sql-server-ji-chu-ru-men-san/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-19%20143925.png"></p>
-<p><img src="/2020/10/19/sql-server-ji-chu-ru-men-san/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202020-10-19%20143754.png"></p>
-<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h5><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">insert [into] 表名 (字段列表) values(值列表)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">--说明：标识列值任何时候都不可以插入值,同时插入的值需要满足表的所有完整性约束
---1.为表的所有字段添加值--如果不指定字段列表，那么就默认需要为所有字段添加值
-insert into Teacher values('张三',1,1，20，2000，‘2000-01-02’)
---2.值不能违反表的约束
-insert into Teacher values('66',1,1，20，2000，‘2000-01-02’)  --会报错
---3.1指定列插入
-insert into Teacher(Name,Gender,Classid,Birthday) values('张三',1,1,‘2000-01-02’)
---3.2插入值要和表中指定值的数目一样
-insert into Teacher values('66',1,1，20，2000，‘2000-01-02’，123)  --会报错
---4.非空字段一定需要插入值，除非它有默认值
-   如果一个字段可以为null,或者默认值，那么在插入的时候也可以执行
-   可以为空字段赋值null，为默认字段赋值default
---5.所有的值都可以使用‘ ’包含，如果字段的类型是数据，那么系统会自动的进行类型转换
---6.如果是日期值，没有使用‘ ’，就会得到系统的默认日期<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="二-数据的更新"><a href="#二-数据的更新" class="headerlink" title="二.数据的更新"></a>二.数据的更新</h3><h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">update 表名 set 字段=值，字段=值 where 条件(主键、唯一键、标识列)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">--1.修改张三的班级为7
-update Teacher set Classid=7 where Name='张三'
---2.修改张三的性别 修改为女，同时将年龄修改为25，将工资加1000
-update Teacher set Gender=0,Age=25,Salary=Salary+1000 where Name='张三'
---3.判断多条件 not and of 修改性别是男同时是7班，将工资+500
-update Teacher set Salary+=500 where Gender=1 and Classid=7 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="三-数据的删除"><a href="#三-数据的删除" class="headerlink" title="三.数据的删除"></a>三.数据的删除</h3><p>数据的删除，不能删除某一列，因为删除是对记录而言</p>
-<h3 id="语法-2"><a href="#语法-2" class="headerlink" title="语法"></a>语法</h3><pre class="line-numbers language-none"><code class="language-none">delete [from] 表 where 条件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">--1.删除姓名为‘8’的人
-delete from Teacher where Name='8'
---2.多条件删除
-删除表中课程id为6，性别为女，年龄大于20
-delete from Teacher where Classid=6 and Gender=0 and Age&gt;20
---3.删除所有数据
-delete from Teacher<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>–truncate</p>
-<p>一次性删除所有记录，日志文件以最小化的方式写入，效率更高</p>
-<p>标识列从种子值重新计算</p>
-<p>不可以触发触发器</p>
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">truncate table 表名(不能添加条件，因为他不是一条一条删除的的，而实一次性删除所有记录，不关注删除的条数)
-truncate table Teacher<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="四-数据的查询"><a href="#四-数据的查询" class="headerlink" title="四.数据的查询"></a>四.数据的查询</h3><h5 id="语法-3"><a href="#语法-3" class="headerlink" title="语法"></a>语法</h5><pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">select 字段列表/*from 列表名 where 条件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-mysql" data-language="mysql"><code class="language-mysql">--1.查询所有信息
-select * from Teacher
---2.查询指定的列
-select id,Name,Salary from Teacher
---3.指定查询的条件，查询女老师
-select * from Teacher where Gender=0
---4.为列指定中文别名
-select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <p>2021/3/24  星期一  Morning</p>
+<pre class="line-numbers language-none"><code class="language-none">	六点的铃声响起，挣扎，昏睡过去。第二次铃声响起，惊醒。好吧，起床吧，今天依旧有很多的事情要做。
+其实，今早的心情有些复杂，依然对昨晚的事情不能释怀。因为，伤害了一位男孩子，感觉他很痛苦。做事过于
+直接。其实，很感谢他对我的喜欢，可是，我接收不到他的信号，内心没有一点的荡漾。我想，我是不喜欢他的。
+他，害羞、自卑、不自信；我，害，很直接，应该再委婉一点才是，真的很抱歉。
+	我想，不喜欢他就不要吊着他了，这样对他是不公平的，一味的让对方付出无果的喜欢，还不如及时止损，
+主动久了都会累的。当然，一味的享受对方的关心也是自私的。
+	希望你慢慢好起来——鹿哥。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -498,8 +444,8 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Sql/">
-                                    <span class="chip bg-color">Sql</span>
+                                <a href="/tags/%E6%97%A5%E5%B8%B8-%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
+                                    <span class="chip bg-color">日常 碎碎念</span>
                                 </a>
                             
                         </div>
@@ -544,7 +490,7 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
         repo: 'SOURCEXU.github.io',
         owner: 'SOURCEXU',
         admin: "SOURCEXU",
-        id: '2020-10-19T13-55-42',
+        id: '2021-03-24T07-12-20',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -572,17 +518,18 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/10/28/censtos-xi-tong-mysql-pei-zhi/">
+                <a href="/2021/03/24/ri-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="Censtos系统MySQL配置">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="日记">
                         
-                        <span class="card-title">Censtos系统MySQL配置</span>
+                        <span class="card-title">日记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -592,9 +539,9 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-28
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -603,11 +550,12 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CenstOS-7-MySQL/">
-                        <span class="chip bg-color">CenstOS 7 MySQL</span>
+                    <a href="/tags/%E6%97%A5%E5%B8%B8-%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
+                        <span class="chip bg-color">日常 碎碎念</span>
                     </a>
                     
                 </div>
@@ -621,13 +569,13 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/10/18/sql-server-ji-chu-ru-men-er/">
+                <a href="/2020/11/29/springboot-mybatis-kuang-jia-da-jian/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Sql Server 基础篇(二)">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="SpringBoot+Mybatis框架搭建">
                         
-                        <span class="card-title">Sql Server 基础篇(二)</span>
+                        <span class="card-title">SpringBoot+Mybatis框架搭建</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -638,7 +586,7 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-29
                             </span>
                         <span class="publish-author">
                             
@@ -651,8 +599,8 @@ select id as 工号,Name,Salary from Teacher where Gender=0 and Age &lt;30<span 
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/sql/">
-                        <span class="chip bg-color">sql</span>
+                    <a href="/tags/SpringBoot-Mybatis-%E5%9D%8F%E5%A2%83%E6%90%AD%E5%BB%BA/">
+                        <span class="chip bg-color">SpringBoot Mybatis 坏境搭建</span>
                     </a>
                     
                 </div>
